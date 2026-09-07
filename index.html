@@ -83,7 +83,20 @@
             border-radius: 8px;
         }
 
-        /* ===== PARTÍCULAS ===== */
+        /* ===== BARRA DE PROGRESO ===== */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--color-primary);
+            z-index: 10000;
+            width: 0%;
+            transition: width 0.1s;
+            box-shadow: 0 0 10px var(--color-primary-glow);
+        }
+
+        /* ===== PARTÍCULAS (canvas) ===== */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -94,7 +107,7 @@
             pointer-events: none;
         }
 
-        /* ===== CURSOR ===== */
+        /* ===== CURSOR PERSONALIZADO (siempre visible, pero se oculta en móvil con clase) ===== */
         .cursor-dot {
             width: 6px;
             height: 6px;
@@ -104,8 +117,9 @@
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
+            transition: width 0.2s, height 0.2s, background 0.3s, opacity 0.2s;
             mix-blend-mode: difference;
+            opacity: 0; /* oculto por defecto */
         }
         .cursor-ring {
             width: 36px;
@@ -116,11 +130,18 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, border-color 0.3s;
+            transition: width 0.3s, height 0.3s, border-color 0.3s, opacity 0.2s;
             mix-blend-mode: difference;
+            opacity: 0;
         }
+        /* Clases para mostrar/ocultar el cursor */
+        .cursor-dot.show,
+        .cursor-ring.show {
+            opacity: 1;
+        }
+        /* En móviles, el cursor se muestra solo al tocar, pero mantenemos los estilos */
 
-        /* ===== HEADER (Glassmorphism) ===== */
+        /* ===== HEADER ===== */
         header {
             position: fixed;
             top: 0;
@@ -354,7 +375,7 @@
             margin-bottom: 56px;
         }
 
-        /* ===== SOBRE NOSOTROS (Misión, Visión, Valores) ===== */
+        /* ===== SOBRE NOSOTROS ===== */
         .about {
             position: relative;
             z-index: 1;
@@ -411,7 +432,7 @@
             line-height: 1.4;
         }
 
-        /* ===== SERVICIOS CON FILTROS Y MODAL ===== */
+        /* ===== SERVICIOS ===== */
         .services {
             position: relative;
             z-index: 1;
@@ -442,6 +463,16 @@
             color: #011a0c;
             border-color: var(--color-primary);
             box-shadow: 0 4px 20px rgba(3, 250, 110, 0.2);
+        }
+        [data-theme="light"] .filter-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="light"] .filter-btn:hover,
+        [data-theme="light"] .filter-btn.active {
+            background: var(--color-primary-dark);
+            color: #ffffff;
+            border-color: var(--color-primary-dark);
         }
 
         .services-grid {
@@ -481,6 +512,9 @@
             transform: translateY(-10px);
             border-color: var(--color-primary);
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+        }
+        [data-theme="light"] .service-card:hover {
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
         }
         .service-icon {
             font-size: 2.4rem;
@@ -550,6 +584,11 @@
             position: relative;
             animation: modalIn 0.3s ease;
         }
+        [data-theme="light"] .modal-content {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+        }
         @keyframes modalIn {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
@@ -596,7 +635,7 @@
             margin-right: 10px;
         }
 
-        /* ===== TESTIMONIOS (CARRUSEL) ===== */
+        /* ===== TESTIMONIOS ===== */
         .testimonials {
             position: relative;
             z-index: 1;
@@ -670,13 +709,13 @@
         }
         .carousel-dots {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             margin-top: 16px;
         }
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: var(--border-glass);
             border: none;
@@ -685,7 +724,7 @@
         }
         .dot.active {
             background: var(--color-primary);
-            width: 28px;
+            width: 32px;
             border-radius: 20px;
         }
 
@@ -883,9 +922,24 @@
         .footer-bottom {
             border-top: 1px solid var(--border-glass);
             padding-top: 24px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
             font-size: 0.85rem;
             color: var(--text-secondary);
+        }
+        .footer-bottom .heart {
+            color: #ff4d4d;
+        }
+        .footer-bottom .footer-legal a {
+            color: var(--text-secondary);
+            margin-left: 16px;
+            transition: color var(--transition);
+        }
+        .footer-bottom .footer-legal a:hover {
+            color: var(--color-primary);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -945,9 +999,12 @@
             .footer-brand p {
                 max-width: 100%;
             }
-            .cursor-dot,
-            .cursor-ring {
-                display: none;
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom .footer-legal a {
+                margin: 0 8px;
             }
             .modal-content {
                 padding: 24px;
@@ -1013,6 +1070,11 @@
             z-index: 999;
             box-shadow: 0 8px 30px rgba(3, 250, 110, 0.3);
         }
+        [data-theme="light"] .scroll-top {
+            background: var(--color-primary-dark);
+            color: #ffffff;
+            box-shadow: 0 8px 30px rgba(1, 75, 33, 0.3);
+        }
         .scroll-top.show {
             opacity: 1;
             visibility: visible;
@@ -1020,6 +1082,10 @@
         .scroll-top:hover {
             transform: translateY(-6px);
             background: var(--color-primary-light);
+        }
+        [data-theme="light"] .scroll-top:hover {
+            background: var(--color-primary);
+            color: #011a0c;
         }
 
         /* ===== LOADER ===== */
@@ -1060,10 +1126,13 @@
         <div class="loader-spinner"></div>
     </div>
 
+    <!-- BARRA DE PROGRESO -->
+    <div id="progress-bar"></div>
+
     <!-- PARTÍCULAS -->
     <canvas id="particles-canvas"></canvas>
 
-    <!-- CURSOR -->
+    <!-- CURSOR PERSONALIZADO -->
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
 
@@ -1120,7 +1189,7 @@
         </div>
     </section>
 
-    <!-- SOBRE NOSOTROS (Misión, Visión, Valores) -->
+    <!-- SOBRE NOSOTROS -->
     <section class="about" id="about">
         <div class="container">
             <div class="about-grid">
@@ -1139,7 +1208,6 @@
                     </p>
                 </div>
 
-                <!-- Misión, Visión, Valores -->
                 <div class="about-values reveal">
                     <div class="value-item">
                         <div class="value-icon"><i class="fas fa-bullseye"></i></div>
@@ -1161,7 +1229,7 @@
         </div>
     </section>
 
-    <!-- SERVICIOS CON FILTROS Y MODAL -->
+    <!-- SERVICIOS -->
     <section class="services" id="services">
         <div class="container">
             <div class="section-header reveal">
@@ -1173,7 +1241,6 @@
                 </p>
             </div>
 
-            <!-- Filtros (NUEVO: Eventos) -->
             <div class="filter-buttons reveal">
                 <button class="filter-btn active" data-filter="all">Todos</button>
                 <button class="filter-btn" data-filter="soporte">Soporte</button>
@@ -1184,7 +1251,6 @@
             </div>
 
             <div class="services-grid" id="servicesGrid">
-                <!-- Tarjeta 1 -->
                 <div class="service-card reveal" data-category="soporte" data-service="soporte">
                     <div class="service-icon"><i class="fas fa-headset"></i></div>
                     <h3>Soporte y Sistemas</h3>
@@ -1192,7 +1258,6 @@
                     <span class="category-tag">Soporte</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <!-- Tarjeta 2 -->
                 <div class="service-card reveal" data-category="seguridad" data-service="seguridad">
                     <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
                     <h3>Seguridad y Redes</h3>
@@ -1200,7 +1265,6 @@
                     <span class="category-tag">Seguridad</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <!-- Tarjeta 3 -->
                 <div class="service-card reveal" data-category="domotica" data-service="domotica">
                     <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
                     <h3>Espacios Inteligentes</h3>
@@ -1208,7 +1272,6 @@
                     <span class="category-tag">Domótica</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <!-- Tarjeta 4 -->
                 <div class="service-card reveal" data-category="web" data-service="web">
                     <div class="service-icon"><i class="fas fa-code"></i></div>
                     <h3>Desarrollo Web</h3>
@@ -1216,7 +1279,6 @@
                     <span class="category-tag">Web</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <!-- Tarjeta 5 -->
                 <div class="service-card reveal" data-category="web" data-service="postproduccion">
                     <div class="service-icon"><i class="fas fa-pen-fancy"></i></div>
                     <h3>Postproducción Digital</h3>
@@ -1224,7 +1286,6 @@
                     <span class="category-tag">Web</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <!-- Tarjeta 6 -->
                 <div class="service-card reveal" data-category="soporte" data-service="consultoria">
                     <div class="service-icon"><i class="fas fa-rocket"></i></div>
                     <h3>Consultoría Tecnológica</h3>
@@ -1232,8 +1293,6 @@
                     <span class="category-tag">Soporte</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-
-                <!-- TARJETA NUEVA: Invitaciones Digitales (categoría Eventos) -->
                 <div class="service-card reveal" data-category="eventos" data-service="invitaciones">
                     <div class="service-icon"><i class="fas fa-ticket-alt"></i></div>
                     <h3>Invitaciones Digitales</h3>
@@ -1245,7 +1304,7 @@
         </div>
     </section>
 
-    <!-- MODAL DE SERVICIO -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="serviceModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -1260,7 +1319,7 @@
         </div>
     </div>
 
-    <!-- TESTIMONIOS (CARRUSEL) -->
+    <!-- TESTIMONIOS -->
     <section class="testimonials" id="testimonials">
         <div class="container">
             <div class="section-header reveal">
@@ -1410,8 +1469,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 MZG Systems · Todos los derechos reservados.</p>
-                <p style="margin-top:4px;opacity:0.6;">Diseño y tecnología de vanguardia · Miguel Zamora</p>
+                <span>&copy; <span id="currentYear"></span> MZG Systems · Todos los derechos reservados.</span>
+                <span class="footer-legal">
+                    <a href="#">Aviso de Privacidad</a>
+                    <a href="#">Términos</a>
+                </span>
+                <span>Hecho con <span class="heart">❤️</span> por MZG Systems</span>
             </div>
         </div>
     </footer>
@@ -1423,26 +1486,17 @@
             document.getElementById('loader').classList.add('hide');
         });
 
-        // ===== TEMA AUTOMÁTICO SEGÚN LA HORA =====
-        function setThemeByTime() {
-            const hour = new Date().getHours();
-            const isDay = hour >= 7 && hour < 19;
-            const root = document.documentElement;
-            const icon = document.querySelector('#themeToggle i');
+        // ===== AÑO DINÁMICO =====
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-            if (isDay) {
-                root.setAttribute('data-theme', 'light');
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                root.removeAttribute('data-theme');
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
+        // ===== FUNCIÓN PARA ACTUALIZAR COLOR DE PARTÍCULAS =====
+        let particleColor = '#03fa6e';
+
+        function setParticleColor(color) {
+            particleColor = color;
         }
-        setThemeByTime();
 
-        // ===== PARTÍCULAS =====
+        // ===== INICIALIZAR PARTÍCULAS =====
         (function initParticles() {
             const canvas = document.getElementById('particles-canvas');
             const ctx = canvas.getContext('2d');
@@ -1475,9 +1529,14 @@
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(3, 250, 110, ${this.opacity})`;
+                    ctx.fillStyle = `rgba(${hexToRgb(particleColor)}, ${this.opacity})`;
                     ctx.fill();
                 }
+            }
+
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? `${parseInt(result[1],16)}, ${parseInt(result[2],16)}, ${parseInt(result[3],16)}` : '3, 250, 110';
             }
 
             for (let i = 0; i < count; i++) {
@@ -1495,7 +1554,7 @@
                             ctx.beginPath();
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(3, 250, 110, ${opacity * 0.2})`;
+                            ctx.strokeStyle = `rgba(${hexToRgb(particleColor)}, ${opacity * 0.2})`;
                             ctx.lineWidth = 0.6;
                             ctx.stroke();
                         }
@@ -1512,34 +1571,151 @@
             animate();
         })();
 
-        // ===== CURSOR =====
+        // ===== TEMA AUTOMÁTICO Y MANUAL =====
+        function applyTheme(isLight) {
+            const root = document.documentElement;
+            const icon = document.querySelector('#themeToggle i');
+            if (isLight) {
+                root.setAttribute('data-theme', 'light');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                setParticleColor('#014b21');
+                updateCursorColors('#014b21');
+            } else {
+                root.removeAttribute('data-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                setParticleColor('#03fa6e');
+                updateCursorColors('#03fa6e');
+            }
+        }
+
+        function updateCursorColors(color) {
+            const dot = document.querySelector('.cursor-dot');
+            const ring = document.querySelector('.cursor-ring');
+            if (dot) dot.style.background = color;
+            if (ring) ring.style.borderColor = color;
+        }
+
+        // Tema según hora
+        function setThemeByTime() {
+            const hour = new Date().getHours();
+            const isDay = hour >= 7 && hour < 19;
+            applyTheme(isDay);
+        }
+
+        setThemeByTime();
+
+        // Botón manual
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const root = document.documentElement;
+            const isLight = root.hasAttribute('data-theme');
+            applyTheme(!isLight);
+        });
+
+        // ===== CURSOR (híbrido: mouse + touch) =====
         const dot = document.getElementById('cursorDot');
         const ring = document.getElementById('cursorRing');
         let mouseX = 0,
             mouseY = 0;
         let ringX = 0,
             ringY = 0;
+        let isTouchDevice = false;
 
+        // Detectar si es táctil
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            isTouchDevice = true;
+        }
+
+        // --- Mouse ---
         document.addEventListener('mousemove', (e) => {
+            if (isTouchDevice) return; // En móviles, solo se usa touch
             mouseX = e.clientX;
             mouseY = e.clientY;
             dot.style.left = mouseX + 'px';
             dot.style.top = mouseY + 'px';
+            dot.classList.add('show');
+            ring.classList.add('show');
         });
 
+        // Ocultar cursor cuando el mouse sale de la ventana (escritorio)
+        document.addEventListener('mouseleave', () => {
+            if (!isTouchDevice) {
+                dot.classList.remove('show');
+                ring.classList.remove('show');
+            }
+        });
+
+        // --- Touch ---
+        function handleTouchStart(e) {
+            const touch = e.touches[0];
+            if (touch) {
+                mouseX = touch.clientX;
+                mouseY = touch.clientY;
+                dot.style.left = mouseX + 'px';
+                dot.style.top = mouseY + 'px';
+                dot.classList.add('show');
+                ring.classList.add('show');
+            }
+        }
+
+        function handleTouchMove(e) {
+            const touch = e.touches[0];
+            if (touch) {
+                mouseX = touch.clientX;
+                mouseY = touch.clientY;
+                dot.style.left = mouseX + 'px';
+                dot.style.top = mouseY + 'px';
+                ring.style.left = mouseX + 'px';
+                ring.style.top = mouseY + 'px';
+                dot.classList.add('show');
+                ring.classList.add('show');
+            }
+        }
+
+        function handleTouchEnd() {
+            // Ocultar después de un breve retraso para que no desaparezca bruscamente
+            setTimeout(() => {
+                dot.classList.remove('show');
+                ring.classList.remove('show');
+            }, 200);
+        }
+
+        // Solo agregar eventos touch si es dispositivo táctil
+        if (isTouchDevice) {
+            document.addEventListener('touchstart', handleTouchStart, { passive: true });
+            document.addEventListener('touchmove', handleTouchMove, { passive: true });
+            document.addEventListener('touchend', handleTouchEnd, { passive: true });
+            // También ocultar al cancelar el toque
+            document.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+        }
+
+        // Animación del anillo (solo para escritorio, pero se mantiene)
         function animateRing() {
-            ringX += (mouseX - ringX) * 0.12;
-            ringY += (mouseY - ringY) * 0.12;
-            ring.style.left = ringX + 'px';
-            ring.style.top = ringY + 'px';
+            if (!isTouchDevice) {
+                ringX += (mouseX - ringX) * 0.12;
+                ringY += (mouseY - ringY) * 0.12;
+                ring.style.left = ringX + 'px';
+                ring.style.top = ringY + 'px';
+            } else {
+                // En móviles, el anillo sigue al dedo directamente (ya se actualiza en touchmove)
+                if (mouseX !== 0 && mouseY !== 0) {
+                    ring.style.left = mouseX + 'px';
+                    ring.style.top = mouseY + 'px';
+                }
+            }
             requestAnimationFrame(animateRing);
         }
         animateRing();
 
-        if ('ontouchstart' in window) {
-            document.querySelector('.cursor-dot').style.display = 'none';
-            document.querySelector('.cursor-ring').style.display = 'none';
-        }
+        // ===== BARRA DE PROGRESO =====
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = progress + '%';
+        });
 
         // ===== HEADER SCROLL =====
         const header = document.getElementById('header');
@@ -1576,24 +1752,6 @@
             });
         });
 
-        // ===== BOTÓN MANUAL DE TEMA =====
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            const root = document.documentElement;
-            const icon = themeToggle.querySelector('i');
-            const isLight = root.hasAttribute('data-theme');
-
-            if (isLight) {
-                root.removeAttribute('data-theme');
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            } else {
-                root.setAttribute('data-theme', 'light');
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-        });
-
         // ===== REVEAL =====
         const revealElements = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
@@ -1612,7 +1770,7 @@
             e.target.reset();
         });
 
-        // ===== FILTROS DE SERVICIOS =====
+        // ===== FILTROS =====
         const filterBtns = document.querySelectorAll('.filter-btn');
         const serviceCards = document.querySelectorAll('.service-card');
 
@@ -1634,7 +1792,7 @@
             });
         });
 
-        // ===== MODAL DE SERVICIO =====
+        // ===== MODAL =====
         const modal = document.getElementById('serviceModal');
         const modalClose = document.getElementById('modalClose');
         const modalIcon = document.getElementById('modalIcon');
@@ -1679,7 +1837,6 @@
                 description: 'Te asesoramos estratégicamente para optimizar tu infraestructura tecnológica y adoptar las mejores soluciones según tus necesidades y presupuesto.',
                 features: ['Análisis de infraestructura', 'Recomendaciones personalizadas', 'Planificación de proyectos tecnológicos', 'Acompañamiento en la implementación']
             },
-            // NUEVO SERVICIO: Invitaciones Digitales
             invitaciones: {
                 icon: 'fa-ticket-alt',
                 title: 'Invitaciones Digitales',
@@ -1725,7 +1882,7 @@
             }
         });
 
-        // ===== CARRUSEL DE TESTIMONIOS =====
+        // ===== CARRUSEL =====
         const track = document.getElementById('testimonialTrack');
         const slides = track.querySelectorAll('.testimonial-slide');
         const prevBtn = document.getElementById('prevTestimonial');
