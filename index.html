@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MZG Systems · Soluciones tecnológicas</title>
+    <!-- Google Fonts (Space Grotesk) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== RESET Y VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #03fa6e;
+            --color-primary-dark: #014b21;
+            --color-white: #ffffff;
+            --color-primary-light: #6affa0;
+            --color-primary-glow: rgba(3, 250, 110, 0.25);
+            --bg-dark: #0a0e0a;
+            --bg-secondary: #011a0c;
+            --bg-card-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --text-primary: #f0f2f5;
+            --text-secondary: #a0b8aa;
+            --shadow-glass: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --radius: 20px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font: 'Space Grotesk', sans-serif;
+            --max-width: 1280px;
+        }
+
+        [data-theme="light"] {
+            --bg-dark: #f0f7f0;
+            --bg-secondary: #dce8dc;
+            --bg-card-glass: rgba(255, 255, 255, 0.7);
+            --border-glass: rgba(0, 0, 0, 0.08);
+            --text-primary: #011a0c;
+            --text-secondary: #1a3a2a;
+            --shadow-glass: 0 12px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 8px;
+        }
+
+        /* ===== PARTÍCULAS ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== CURSOR ===== */
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--color-primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        /* ===== HEADER (Glassmorphism) ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(1, 26, 12, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+        header.scrolled {
+            background: rgba(1, 26, 12, 0.75);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(3, 250, 110, 0.2);
+        }
+        [data-theme="light"] header {
+            background: rgba(240, 247, 240, 0.5);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        [data-theme="light"] header.scrolled {
+            background: rgba(240, 247, 240, 0.8);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+        }
+        .logo span {
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            list-style: none;
+        }
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: width var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: color var(--transition);
+            padding: 4px 8px;
+        }
+        .theme-toggle:hover {
+            color: var(--color-primary);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--text-primary);
+            transition: var(--transition);
+            border-radius: 4px;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            background: radial-gradient(ellipse at 30% 50%, rgba(3, 250, 110, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(3, 250, 110, 0.04) 0%, transparent 50%);
+            animation: heroGradient 10s ease-in-out infinite alternate;
+        }
+        @keyframes heroGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .hero-content {
+            max-width: 760px;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #011a0c;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 6px 20px;
+            border-radius: 50px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5.2rem);
+            font-weight: 700;
+            line-height: 1.08;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+        .hero h1 .highlight {
+            color: var(--color-primary);
+            position: relative;
+        }
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--color-primary);
+            opacity: 0.2;
+            border-radius: 4px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .btn-primary,
+        .btn-secondary {
+            display: inline-block;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: var(--color-primary);
+            color: #011a0c;
+            box-shadow: 0 4px 20px rgba(3, 250, 110, 0.3);
+        }
+        .btn-primary:hover {
+            background: var(--color-primary-light);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(3, 250, 110, 0.4);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+        }
+        .btn-secondary:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(3, 250, 110, 0.15);
+        }
+
+        /* ===== SECCIÓN TÍTULO ===== */
+        .section-title {
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 640px;
+            margin-bottom: 48px;
+            line-height: 1.7;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        /* ===== SOBRE NOSOTROS (Misión, Visión, Valores) ===== */
+        .about {
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+            background: var(--bg-secondary);
+            transition: background var(--transition);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .about-values {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .value-item {
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            padding: 28px 16px;
+            text-align: center;
+            border: 1px solid var(--border-glass);
+            transition: var(--transition);
+        }
+        .value-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--color-primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .value-icon {
+            font-size: 2.8rem;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+        }
+        .value-item h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .value-item p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* ===== SERVICIOS CON FILTROS Y MODAL ===== */
+        .services {
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--color-primary);
+            color: #011a0c;
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 20px rgba(3, 250, 110, 0.2);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            border: 1px solid var(--border-glass);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-glass);
+            cursor: pointer;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--color-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition);
+        }
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-primary);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+        }
+        .service-icon {
+            font-size: 2.4rem;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.15) rotate(-3deg);
+        }
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .service-card .category-tag {
+            display: inline-block;
+            margin-top: 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            padding: 4px 14px;
+            border-radius: 50px;
+        }
+        .service-card .more-info {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--color-primary);
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color var(--transition);
+        }
+        .modal-close:hover {
+            color: var(--color-primary);
+        }
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .modal-content .modal-icon {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+        }
+        .modal-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .modal-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .modal-content ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+        }
+        .modal-content ul li i {
+            color: var(--color-primary);
+            margin-right: 10px;
+        }
+
+        /* ===== TESTIMONIOS (CARRUSEL) ===== */
+        .testimonials {
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+            background: var(--bg-secondary);
+            transition: background var(--transition);
+        }
+        .testimonial-carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+        .testimonial-slide img {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 16px;
+            border: 2px solid var(--color-primary);
+        }
+        .testimonial-slide blockquote {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 16px;
+        }
+        .testimonial-slide .author {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .testimonial-slide .role {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .carousel-btn {
+            background: var(--bg-card-glass);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-btn:hover {
+            background: var(--color-primary);
+            color: #011a0c;
+            border-color: var(--color-primary);
+        }
+        .carousel-dots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-glass);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .dot.active {
+            background: var(--color-primary);
+            width: 28px;
+            border-radius: 20px;
+        }
+
+        /* ===== COMPROMISO ===== */
+        .commitment {
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+            text-align: center;
+        }
+        .commitment .container {
+            max-width: 820px;
+        }
+        .commitment blockquote {
+            font-size: 1.5rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            border-left: 4px solid var(--color-primary);
+            padding-left: 28px;
+            text-align: left;
+            margin-top: 20px;
+        }
+        .commitment blockquote strong {
+            color: var(--text-primary);
+            font-style: normal;
+        }
+
+        /* ===== CONTACTO ===== */
+        .contact {
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+            background: var(--bg-secondary);
+            transition: background var(--transition);
+        }
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        .contact-info h3 {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+        }
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .contact-item i {
+            font-size: 1.2rem;
+            color: var(--color-primary);
+            width: 24px;
+        }
+        .contact-map {
+            margin-top: 24px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+        }
+        .contact-map iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(3, 250, 110, 0.15);
+        }
+        .contact-form textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        .contact-form button {
+            background: var(--color-primary);
+            color: #011a0c;
+            border: none;
+            padding: 14px 44px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .contact-form button:hover {
+            background: var(--color-primary-light);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(3, 250, 110, 0.3);
+        }
+
+        /* ===== WHATSAPP FLOTANTE ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 999;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            position: relative;
+            z-index: 1;
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border-glass);
+            padding: 48px 0 32px;
+            transition: background var(--transition);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            max-width: 300px;
+        }
+        .footer-links h4,
+        .footer-social h4 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .footer-links ul {
+            list-style: none;
+        }
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        .footer-links ul li a {
+            color: var(--text-secondary);
+            transition: color var(--transition);
+            font-size: 0.9rem;
+        }
+        .footer-links ul li a:hover {
+            color: var(--color-primary);
+        }
+        .footer-social .social-icons {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .footer-social .social-icons a {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+        .footer-social .social-icons a:hover {
+            color: var(--color-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-glass);
+            padding-top: 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .about-values {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-secondary);
+                backdrop-filter: blur(24px);
+                flex-direction: column;
+                justify-content: center;
+                gap: 30px;
+                padding: 40px;
+                transition: right var(--transition);
+                border-left: 1px solid var(--border-glass);
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .hero h1 {
+                font-size: clamp(2.4rem, 10vw, 3.8rem);
+            }
+            .about-values {
+                grid-template-columns: 1fr 1fr;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-brand p {
+                max-width: 100%;
+            }
+            .cursor-dot,
+            .cursor-ring {
+                display: none;
+            }
+            .modal-content {
+                padding: 24px;
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+            .about-values {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .filter-buttons {
+                gap: 8px;
+            }
+            .filter-btn {
+                padding: 6px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ===== REVEAL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== SCROLL TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--color-primary);
+            color: #011a0c;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 8px 30px rgba(3, 250, 110, 0.3);
+        }
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .scroll-top:hover {
+            transform: translateY(-6px);
+            background: var(--color-primary-light);
+        }
+
+        /* ===== LOADER ===== */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loader.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-glass);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- PARTÍCULAS -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- WHATSAPP FLOTANTE -->
+    <a href="https://wa.me/5215512345678?text=Hola%20MZG%20Systems,%20me%20interesa%20sus%20servicios" 
+       class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- SCROLL TOP -->
+    <button class="scroll-top" id="scrollTop" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container header-inner">
+            <a href="#" class="logo">MZG<span>Systems</span></a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#about">Nosotros</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#testimonials">Testimonios</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                    <li>
+                        <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="container hero-content">
+            <span class="hero-badge">Innovación &amp; seguridad</span>
+            <h1>
+                Soluciones<br />
+                <span class="highlight">tecnológicas</span> avanzadas
+            </h1>
+            <p>
+                Protegemos, optimizamos y modernizamos tu entorno profesional
+                con un estándar de excelencia y diseño minimalista.
+            </p>
+            <div class="hero-buttons">
+                <!-- El botón ya hace scroll suave gracias a href="#services" + scroll-behavior: smooth -->
+                <a href="#services" class="btn-primary">Descubre nuestros servicios</a>
+                <a href="#contact" class="btn-secondary">Hablemos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE NOSOTROS (Misión, Visión, Valores) -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <span class="hero-badge" style="background:var(--color-primary);color:#011a0c;">Quiénes somos</span>
+                    <h2 class="section-title" style="text-align:left;">Excelencia en cada <br />solución</h2>
+                    <p>
+                        En <strong>MZG Systems</strong> convertimos la complejidad tecnológica
+                        en una ventaja estratégica. Ofrecemos un servicio personalizado,
+                        transparente y orientado a resultados para garantizar tu tranquilidad.
+                    </p>
+                    <p>
+                        Desde la seguridad electrónica hasta los espacios inteligentes,
+                        integramos herramientas de vanguardia que aseguran eficiencia
+                        operativa y protección total.
+                    </p>
+                </div>
+
+                <!-- Misión, Visión, Valores -->
+                <div class="about-values reveal">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-bullseye"></i></div>
+                        <h4>Misión</h4>
+                        <p>Proveer soluciones tecnológicas que impulsen la productividad y seguridad de nuestros clientes.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-eye"></i></div>
+                        <h4>Visión</h4>
+                        <p>Ser referentes en innovación tecnológica, creando entornos inteligentes y seguros.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-gem"></i></div>
+                        <h4>Valores</h4>
+                        <p>Confianza, transparencia, excelencia y compromiso con el cliente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS CON FILTROS Y MODAL -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="hero-badge" style="background:var(--color-primary);color:#011a0c;">Nuestras áreas</span>
+                <h2 class="section-title">Servicios especializados</h2>
+                <p class="section-subtitle">
+                    Cada solución está diseñada para proteger, optimizar y modernizar
+                    tu entorno con un enfoque minimalista y de alto impacto.
+                </p>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filter-buttons reveal">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="soporte">Soporte</button>
+                <button class="filter-btn" data-filter="seguridad">Seguridad</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="domotica">Domótica</button>
+            </div>
+
+            <div class="services-grid" id="servicesGrid">
+                <!-- Tarjeta 1 -->
+                <div class="service-card reveal" data-category="soporte" data-service="soporte">
+                    <div class="service-icon"><i class="fas fa-headset"></i></div>
+                    <h3>Soporte y Sistemas</h3>
+                    <p>Asistencia remota, mantenimiento preventivo/correctivo, formateo y gestión de licencias.</p>
+                    <span class="category-tag">Soporte</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="service-card reveal" data-category="seguridad" data-service="seguridad">
+                    <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Seguridad y Redes</h3>
+                    <p>Implementación de VPN, seguridad informática, CCTV, configuración de redes y optimización Wi-Fi.</p>
+                    <span class="category-tag">Seguridad</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <!-- Tarjeta 3 (Espacios Inteligentes) ICONO ACTUALIZADO A FOCO -->
+                <div class="service-card reveal" data-category="domotica" data-service="domotica">
+                    <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3>Espacios Inteligentes</h3>
+                    <p>Automatización y domótica para hogares y oficinas, creando entornos conectados y eficientes.</p>
+                    <span class="category-tag">Domótica</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <!-- Tarjeta 4 -->
+                <div class="service-card reveal" data-category="web" data-service="web">
+                    <div class="service-icon"><i class="fas fa-code"></i></div>
+                    <h3>Desarrollo Web</h3>
+                    <p>Creación de sitios profesionales, administración de cPanel, firmas digitales y registro de dominios.</p>
+                    <span class="category-tag">Web</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <!-- Tarjeta 5 -->
+                <div class="service-card reveal" data-category="web" data-service="postproduccion">
+                    <div class="service-icon"><i class="fas fa-pen-fancy"></i></div>
+                    <h3>Postproducción Digital</h3>
+                    <p>Edición fotográfica, retoque profesional, invitaciones digitales interactivas y mantenimiento web.</p>
+                    <span class="category-tag">Web</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <!-- Tarjeta 6 -->
+                <div class="service-card reveal" data-category="soporte" data-service="consultoria">
+                    <div class="service-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>Consultoría Tecnológica</h3>
+                    <p>Asesoramiento estratégico para optimizar tu infraestructura y adoptar las mejores soluciones.</p>
+                    <span class="category-tag">Soporte</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE SERVICIO -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-icon" id="modalIcon"><i class="fas fa-headset"></i></div>
+            <h2 id="modalTitle">Soporte y Sistemas</h2>
+            <p id="modalDescription">Descripción detallada del servicio.</p>
+            <ul id="modalFeatures">
+                <li><i class="fas fa-check-circle"></i> Característica 1</li>
+                <li><i class="fas fa-check-circle"></i> Característica 2</li>
+                <li><i class="fas fa-check-circle"></i> Característica 3</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TESTIMONIOS (CARRUSEL) -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="hero-badge" style="background:var(--color-primary);color:#011a0c;">Testimonios</span>
+                <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+                <p class="section-subtitle">Experiencias reales que respaldan nuestro compromiso con la excelencia.</p>
+            </div>
+            <div class="testimonial-carousel reveal">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="testimonial-slide">
+                        <img src="https://ui-avatars.com/api/?name=Ana+García&background=03fa6e&color=014b21&size=72" alt="Ana García">
+                        <blockquote>“MZG Systems transformó por completo la seguridad de nuestra oficina. El sistema de CCTV y la domótica nos han dado un control total.”</blockquote>
+                        <div class="author">Ana García</div>
+                        <div class="role">Directora de Operaciones</div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <img src="https://ui-avatars.com/api/?name=Carlos+Mendoza&background=03fa6e&color=014b21&size=72" alt="Carlos Mendoza">
+                        <blockquote>“El soporte técnico es increíble. Rápidos, eficientes y siempre disponibles. Han sido un aliado estratégico para nuestra empresa.”</blockquote>
+                        <div class="author">Carlos Mendoza</div>
+                        <div class="role">CEO, TechSolutions</div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <img src="https://ui-avatars.com/api/?name=Laura+Fernández&background=03fa6e&color=014b21&size=72" alt="Laura Fernández">
+                        <blockquote>“La página web que nos diseñaron superó todas nuestras expectativas. Moderna, rápida y con una imagen corporativa impecable.”</blockquote>
+                        <div class="author">Laura Fernández</div>
+                        <div class="role">Marketing Digital</div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <img src="https://ui-avatars.com/api/?name=Roberto+Martínez&background=03fa6e&color=014b21&size=72" alt="Roberto Martínez">
+                        <blockquote>“La automatización de nuestra oficina con MZG Systems mejoró la eficiencia energética y la comodidad de todo el equipo.”</blockquote>
+                        <div class="author">Roberto Martínez</div>
+                        <div class="role">Gerente de Instalaciones</div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn" id="prevTestimonial"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-btn" id="nextTestimonial"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="carousel-dots" id="testimonialDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPROMISO -->
+    <section class="commitment" id="commitment">
+        <div class="container reveal">
+            <span class="hero-badge" style="background:var(--color-primary);color:#011a0c;">Nuestro compromiso</span>
+            <h2 class="section-title">Tu tranquilidad es nuestra prioridad</h2>
+            <blockquote>
+                “En <strong>MZG Systems</strong> convertimos la complejidad tecnológica
+                en una ventaja estratégica a través de un servicio personalizado,
+                transparente y orientado a resultados.”
+            </blockquote>
+            <div style="margin-top: 32px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+                <span style="display:flex;align-items:center;gap:10px;background:var(--bg-card-glass);backdrop-filter:blur(8px);padding:10px 24px;border-radius:50px;border:1px solid var(--border-glass);">
+                    <i class="fas fa-check-circle" style="color:var(--color-primary);"></i> Soporte remoto sin restricciones
+                </span>
+                <span style="display:flex;align-items:center;gap:10px;background:var(--bg-card-glass);backdrop-filter:blur(8px);padding:10px 24px;border-radius:50px;border:1px solid var(--border-glass);">
+                    <i class="fas fa-check-circle" style="color:var(--color-primary);"></i> Cobertura CDMX y Área Metropolitana
+                </span>
+                <span style="display:flex;align-items:center;gap:10px;background:var(--bg-card-glass);backdrop-filter:blur(8px);padding:10px 24px;border-radius:50px;border:1px solid var(--border-glass);">
+                    <i class="fas fa-check-circle" style="color:var(--color-primary);"></i> Facturación con IVA (opcional)
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="hero-badge" style="background:var(--color-primary);color:#011a0c;">Contacto</span>
+                <h2 class="section-title">Hablemos de tu proyecto</h2>
+                <p class="section-subtitle">
+                    Cuéntanos lo que necesitas y te ofreceremos la solución más adecuada.
+                </p>
+            </div>
+            <div class="contact-wrapper">
+                <div class="contact-info reveal">
+                    <h3>¿Listo para transformar tu entorno?</h3>
+                    <p>
+                        Estamos aquí para ayudarte. Contáctanos por cualquiera de estos medios
+                        o llena el formulario y te responderemos a la brevedad.
+                    </p>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+52 55 1234 5678</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@mzgsystems.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ciudad de México y Área Metropolitana</span>
+                    </div>
+                    <div class="contact-map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.535381852288!2d-99.1337!3d19.4326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f92f8b5d6f8d%3A0x8f8f8f8f8f8f8f8f!2sCiudad%20de%20M%C3%A9xico!5e0!3m2!1ses!2smx!4v1680000000000" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
+                <form class="contact-form reveal" id="contactForm">
+                    <input type="text" placeholder="Nombre completo" required>
+                    <input type="email" placeholder="Correo electrónico" required>
+                    <input type="text" placeholder="Teléfono (opcional)">
+                    <textarea placeholder="Cuéntanos tu proyecto..." required></textarea>
+                    <button type="submit">Enviar mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size:1.6rem;">MZG<span>Systems</span></div>
+                    <p>Soluciones tecnológicas avanzadas con un enfoque minimalista y orientado a resultados.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces rápidos</h4>
+                    <ul>
+                        <li><a href="#about">Nosotros</a></li>
+                        <li><a href="#services">Servicios</a></li>
+                        <li><a href="#testimonials">Testimonios</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Aviso de Privacidad</a></li>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="margin-top:16px;color:var(--text-secondary);font-size:0.85rem;">
+                        <i class="fas fa-envelope" style="margin-right:6px;"></i> info@mzgsystems.com
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MZG Systems · Todos los derechos reservados.</p>
+                <p style="margin-top:4px;opacity:0.6;">Diseño y tecnología de vanguardia · Miguel Zamora</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ===== LOADER =====
+        window.addEventListener('load', () => {
+            document.getElementById('loader').classList.add('hide');
+        });
+
+        // ===== TEMA AUTOMÁTICO SEGÚN LA HORA (con opción de cambio manual) =====
+        function setThemeByTime() {
+            const hour = new Date().getHours();
+            // Tema claro de 7:00 a.m. a 6:59 p.m.
+            const isDay = hour >= 7 && hour < 19;
+            const root = document.documentElement;
+            const icon = document.querySelector('#themeToggle i');
+
+            if (isDay) {
+                root.setAttribute('data-theme', 'light');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                root.removeAttribute('data-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // Ejecutar al cargar la página
+        setThemeByTime();
+
+        // ===== PARTÍCULAS =====
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            const particles = [];
+            const count = 70;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.4;
+                    this.speedY = (Math.random() - 0.5) * 0.4;
+                    this.opacity = Math.random() * 0.5 + 0.15;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > w) this.speedX *= -1;
+                    if (this.y < 0 || this.y > h) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(3, 250, 110, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+
+            function drawLines() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 140) {
+                            const opacity = 1 - dist / 140;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(3, 250, 110, ${opacity * 0.2})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
+                drawLines();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ===== CURSOR =====
+        const dot = document.getElementById('cursorDot');
+        const ring = document.getElementById('cursorRing');
+        let mouseX = 0,
+            mouseY = 0;
+        let ringX = 0,
+            ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
+
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.12;
+            ringY += (mouseY - ringY) * 0.12;
+            ring.style.left = ringX + 'px';
+            ring.style.top = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        if ('ontouchstart' in window) {
+            document.querySelector('.cursor-dot').style.display = 'none';
+            document.querySelector('.cursor-ring').style.display = 'none';
+        }
+
+        // ===== HEADER SCROLL =====
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            const btn = document.getElementById('scrollTop');
+            if (window.scrollY > 400) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+
+        // ===== SCROLL TOP =====
+        document.getElementById('scrollTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== HAMBURGER =====
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ===== BOTÓN MANUAL DE TEMA (sobrescribe el automático durante la sesión) =====
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const root = document.documentElement;
+            const icon = themeToggle.querySelector('i');
+            const isLight = root.hasAttribute('data-theme');
+
+            if (isLight) {
+                root.removeAttribute('data-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                root.setAttribute('data-theme', 'light');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+
+        // ===== REVEAL =====
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        revealElements.forEach(el => observer.observe(el));
+
+        // ===== FORMULARIO =====
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('¡Gracias! En breve nos pondremos en contacto contigo.');
+            e.target.reset();
+        });
+
+        // ===== FILTROS DE SERVICIOS =====
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const serviceCards = document.querySelectorAll('.service-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                serviceCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                        setTimeout(() => { card.style.opacity = '1'; }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        setTimeout(() => { card.style.display = 'none'; }, 300);
+                    }
+                });
+            });
+        });
+
+        // ===== MODAL DE SERVICIO =====
+        const modal = document.getElementById('serviceModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalFeatures = document.getElementById('modalFeatures');
+
+        const serviceData = {
+            soporte: {
+                icon: 'fa-headset',
+                title: 'Soporte y Sistemas',
+                description: 'Brindamos asistencia técnica especializada para mantener tus sistemas operando sin interrupciones. Nuestro servicio incluye mantenimiento preventivo y correctivo, formateo, reinstalación de sistemas operativos y gestión de licencias.',
+                features: ['Mantenimiento preventivo y correctivo', 'Formateo e instalación de S.O.', 'Gestión de licencias y software', 'Soporte remoto sin restricciones']
+            },
+            seguridad: {
+                icon: 'fa-shield-alt',
+                title: 'Seguridad y Redes',
+                description: 'Protegemos tu infraestructura tecnológica con soluciones de seguridad de vanguardia. Implementamos redes VPN, sistemas de videovigilancia (CCTV) y optimizamos tu red para garantizar conectividad y protección.',
+                features: ['Redes VPN y seguridad informática', 'Instalación de CCTV y monitoreo', 'Configuración de routers y balanceo de carga', 'Optimización de infraestructura de red']
+            },
+            domotica: {
+                icon: 'fa-lightbulb', // ICONO ACTUALIZADO A FOCO
+                title: 'Espacios Inteligentes (Domótica)',
+                description: 'Transformamos hogares y oficinas en entornos inteligentes mediante la automatización de sistemas. Controla iluminación, climatización, persianas y más desde cualquier dispositivo.',
+                features: ['Automatización de iluminación y climatización', 'Control por voz y desde dispositivos móviles', 'Escenas personalizables', 'Eficiencia energética']
+            },
+            web: {
+                icon: 'fa-code',
+                title: 'Desarrollo Web',
+                description: 'Creamos ecosistemas digitales profesionales que potencian tu presencia en línea. Diseñamos sitios web modernos, administramos cPanel, creamos firmas digitales y gestionamos dominios.',
+                features: ['Desarrollo de sitios web profesionales', 'Administración de cPanel', 'Firmas digitales corporativas', 'Registro y gestión de dominios']
+            },
+            postproduccion: {
+                icon: 'fa-pen-fancy',
+                title: 'Postproducción Digital',
+                description: 'Ofrecemos servicios avanzados de edición y manipulación visual para garantizar una imagen corporativa impecable. Desde retoque fotográfico hasta invitaciones digitales interactivas.',
+                features: ['Edición y retoque fotográfico', 'Manipulación digital profesional', 'Invitaciones interactivas para eventos', 'Mantenimiento web (contenidos, backups)']
+            },
+            consultoria: {
+                icon: 'fa-rocket',
+                title: 'Consultoría Tecnológica',
+                description: 'Te asesoramos estratégicamente para optimizar tu infraestructura tecnológica y adoptar las mejores soluciones según tus necesidades y presupuesto.',
+                features: ['Análisis de infraestructura', 'Recomendaciones personalizadas', 'Planificación de proyectos tecnológicos', 'Acompañamiento en la implementación']
+            }
+        };
+
+        serviceCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const serviceKey = card.dataset.service;
+                const data = serviceData[serviceKey];
+                if (data) {
+                    modalIcon.innerHTML = `<i class="fas ${data.icon}"></i>`;
+                    modalTitle.textContent = data.title;
+                    modalDescription.textContent = data.description;
+                    modalFeatures.innerHTML = data.features.map(f =>
+                        `<li><i class="fas fa-check-circle"></i> ${f}</li>`
+                    ).join('');
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // ===== CARRUSEL DE TESTIMONIOS =====
+        const track = document.getElementById('testimonialTrack');
+        const slides = track.querySelectorAll('.testimonial-slide');
+        const prevBtn = document.getElementById('prevTestimonial');
+        const nextBtn = document.getElementById('nextTestimonial');
+        const dotsContainer = document.getElementById('testimonialDots');
+
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        let autoPlayInterval;
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.dataset.index = i;
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = dotsContainer.querySelectorAll('.dot');
+
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            currentIndex = index;
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+        }
+
+        function nextSlide() {
+            goToSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            goToSlide(currentIndex - 1);
+        }
+
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetAutoPlay();
+        });
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetAutoPlay();
+        });
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(nextSlide, 5000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            startAutoPlay();
+        }
+
+        startAutoPlay();
+
+        const carousel = document.querySelector('.testimonial-carousel');
+        carousel.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        carousel.addEventListener('mouseleave', startAutoPlay);
+    </script>
+</body>
+</html>
