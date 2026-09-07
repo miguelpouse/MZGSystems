@@ -1114,7 +1114,6 @@
                 con un estándar de excelencia y diseño minimalista.
             </p>
             <div class="hero-buttons">
-                <!-- El botón ya hace scroll suave gracias a href="#services" + scroll-behavior: smooth -->
                 <a href="#services" class="btn-primary">Descubre nuestros servicios</a>
                 <a href="#contact" class="btn-secondary">Hablemos</a>
             </div>
@@ -1174,13 +1173,14 @@
                 </p>
             </div>
 
-            <!-- Filtros -->
+            <!-- Filtros (NUEVO: Eventos) -->
             <div class="filter-buttons reveal">
                 <button class="filter-btn active" data-filter="all">Todos</button>
                 <button class="filter-btn" data-filter="soporte">Soporte</button>
                 <button class="filter-btn" data-filter="seguridad">Seguridad</button>
                 <button class="filter-btn" data-filter="web">Web</button>
                 <button class="filter-btn" data-filter="domotica">Domótica</button>
+                <button class="filter-btn" data-filter="eventos">Eventos</button>
             </div>
 
             <div class="services-grid" id="servicesGrid">
@@ -1200,7 +1200,7 @@
                     <span class="category-tag">Seguridad</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
-                <!-- Tarjeta 3 (Espacios Inteligentes) ICONO ACTUALIZADO A FOCO -->
+                <!-- Tarjeta 3 -->
                 <div class="service-card reveal" data-category="domotica" data-service="domotica">
                     <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
                     <h3>Espacios Inteligentes</h3>
@@ -1230,6 +1230,15 @@
                     <h3>Consultoría Tecnológica</h3>
                     <p>Asesoramiento estratégico para optimizar tu infraestructura y adoptar las mejores soluciones.</p>
                     <span class="category-tag">Soporte</span>
+                    <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
+                </div>
+
+                <!-- TARJETA NUEVA: Invitaciones Digitales (categoría Eventos) -->
+                <div class="service-card reveal" data-category="eventos" data-service="invitaciones">
+                    <div class="service-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <h3>Invitaciones Digitales</h3>
+                    <p>Diseño y desarrollo de invitaciones interactivas para bodas, cumpleaños, eventos corporativos, baby showers y más.</p>
+                    <span class="category-tag">Eventos</span>
                     <span class="more-info">Haz clic para más detalles <i class="fas fa-arrow-right"></i></span>
                 </div>
             </div>
@@ -1414,10 +1423,9 @@
             document.getElementById('loader').classList.add('hide');
         });
 
-        // ===== TEMA AUTOMÁTICO SEGÚN LA HORA (con opción de cambio manual) =====
+        // ===== TEMA AUTOMÁTICO SEGÚN LA HORA =====
         function setThemeByTime() {
             const hour = new Date().getHours();
-            // Tema claro de 7:00 a.m. a 6:59 p.m.
             const isDay = hour >= 7 && hour < 19;
             const root = document.documentElement;
             const icon = document.querySelector('#themeToggle i');
@@ -1432,8 +1440,6 @@
                 icon.classList.add('fa-moon');
             }
         }
-
-        // Ejecutar al cargar la página
         setThemeByTime();
 
         // ===== PARTÍCULAS =====
@@ -1570,7 +1576,7 @@
             });
         });
 
-        // ===== BOTÓN MANUAL DE TEMA (sobrescribe el automático durante la sesión) =====
+        // ===== BOTÓN MANUAL DE TEMA =====
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             const root = document.documentElement;
@@ -1650,7 +1656,7 @@
                 features: ['Redes VPN y seguridad informática', 'Instalación de CCTV y monitoreo', 'Configuración de routers y balanceo de carga', 'Optimización de infraestructura de red']
             },
             domotica: {
-                icon: 'fa-lightbulb', // ICONO ACTUALIZADO A FOCO
+                icon: 'fa-lightbulb',
                 title: 'Espacios Inteligentes (Domótica)',
                 description: 'Transformamos hogares y oficinas en entornos inteligentes mediante la automatización de sistemas. Controla iluminación, climatización, persianas y más desde cualquier dispositivo.',
                 features: ['Automatización de iluminación y climatización', 'Control por voz y desde dispositivos móviles', 'Escenas personalizables', 'Eficiencia energética']
@@ -1672,6 +1678,22 @@
                 title: 'Consultoría Tecnológica',
                 description: 'Te asesoramos estratégicamente para optimizar tu infraestructura tecnológica y adoptar las mejores soluciones según tus necesidades y presupuesto.',
                 features: ['Análisis de infraestructura', 'Recomendaciones personalizadas', 'Planificación de proyectos tecnológicos', 'Acompañamiento en la implementación']
+            },
+            // NUEVO SERVICIO: Invitaciones Digitales
+            invitaciones: {
+                icon: 'fa-ticket-alt',
+                title: 'Invitaciones Digitales',
+                description: 'Diseñamos invitaciones digitales interactivas de alto impacto para todo tipo de eventos. Bodas, cumpleaños, baby showers, eventos corporativos, lanzamientos de producto y más. Cada invitación es completamente personalizada con la identidad visual de tu evento.',
+                features: [
+                    'Diseño personalizado con identidad de marca/evento',
+                    'RSVP y confirmación de asistencia en línea',
+                    'Integración con Google Maps para ubicación',
+                    'Recordatorios automáticos vía email y WhatsApp',
+                    'Lista de invitados y gestión de asistentes',
+                    'Galería de fotos y álbum del evento',
+                    'Enlaces a plataformas de streaming (eventos virtuales)',
+                    'Totalmente adaptable a móviles y tablets'
+                ]
             }
         };
 
