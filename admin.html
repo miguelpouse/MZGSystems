@@ -1145,17 +1145,22 @@ function badgeEstado(estado) {
     return `<span class="badge ${m[estado] || 'badge-pending'}">${escapeHtml(estado || '—')}</span>`;
 }
 async function apiGet(accion, extra = {}) {
-    const params = new URLSearchParams({ accion, apiKey: API_KEY, ...extra });
-    const url = `${API_URL}?${params.toString()}`;
-    
-    // Usamos 'text/plain' para que el navegador no haga la verificación previa (preflight)
-    const res = await fetch(url, {
-        method: 'GET',
-        redirect: 'follow',
-        headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-        }
+    // Usamos POST en lugar de GET para evitar el bloqueo de CORS de Google
+    const res = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ ...extra, apiKey: API_KEY, accion: accion }),
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        redirect: 'follow'
     });
+    
+    const text = await res.text();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        console.error("Respuesta recibida (no es JSON):", text);
+        throw new Error("Error de redirección de Google");
+    }
+}
     
     // Si la respuesta no es JSON (ej. una página de login de Google), lanzamos un error
     const text = await res.text();
