@@ -1148,25 +1148,24 @@ async function apiGet(accion, extra = {}) {
     const params = new URLSearchParams({ accion, apiKey: API_KEY, ...extra });
     const url = `${API_URL}?${params.toString()}`;
     
-    try {
-        const res = await fetch(url, {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' }
-        });
-        
-        const text = await res.text();
-        try {
-            return JSON.parse(text);
-        } catch (e) {
-            console.error("Respuesta no es JSON (probablemente HTML de login):", text);
-            throw new Error("Error de autenticación en Google");
+    // Usamos 'text/plain' para que el navegador no haga la verificación previa (preflight)
+    const res = await fetch(url, {
+        method: 'GET',
+        redirect: 'follow',
+        headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
         }
-    } catch (error) {
-        console.error("Fallo en apiGet:", error);
-        throw error;
+    });
+    
+    // Si la respuesta no es JSON (ej. una página de login de Google), lanzamos un error
+    const text = await res.text();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        console.error("Respuesta recibida (no es JSON):", text);
+        throw new Error("Error de CORS o autenticación en Google");
     }
 }
-
 async function apiPost(payload) {
     const res = await fetch(API_URL, {
         method: 'POST',
