@@ -1147,8 +1147,18 @@ function badgeEstado(estado) {
 
 async function apiGet(accion, extra = {}) {
     const params = new URLSearchParams({ accion, apiKey: API_KEY, ...extra });
-    const res = await fetch(`${API_URL}?${params.toString()}`);
+    
+    // Usamos 'text/plain' y 'follow' para evitar la verificación OPTIONS y permitir la redirección
+    const res = await fetch(`${API_URL}?${params.toString()}`, {
+        method: 'GET',
+        mode: 'cors',
+        redirect: 'follow',
+        headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+        }
+    });
     return res.json();
+}
 }
 
 async function apiPost(payload) {
