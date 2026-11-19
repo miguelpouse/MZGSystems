@@ -1145,6 +1145,7 @@ function badgeEstado(estado) {
     return `<span class="badge ${m[estado] || 'badge-pending'}">${escapeHtml(estado || '—')}</span>`;
 }
 async function apiGet(accion, extra = {}) {
+    // Usamos POST en lugar de GET para evitar el bloqueo de CORS de Google
     const res = await fetch(API_URL, {
         method: 'POST',
         body: JSON.stringify({ ...extra, apiKey: API_KEY, accion: accion }),
