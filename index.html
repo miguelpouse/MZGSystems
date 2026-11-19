@@ -117,26 +117,55 @@
 
         .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 
-        /* LOGO */
+        /* LOGO CON ANIMACIÓN CONTINUA */
         .logo { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; color: var(--text-primary); display: inline-flex; align-items: center; gap: 14px; text-decoration: none; transition: var(--transition); position: relative; overflow: hidden; padding: 4px 6px; border-radius: 8px; }
         .logo::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(3, 250, 110, 0.15) 50%, transparent 100%); transition: left 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); pointer-events: none; }
         .logo:hover::before { left: 100%; }
-        .logo-mark { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font); font-weight: 800; font-size: 1.7em; line-height: 1; letter-spacing: -6px; color: var(--logo-mark-color); transition: var(--transition); position: relative; animation: logoBreath 4s ease-in-out infinite; }
-        @keyframes logoBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
-        .logo-mark .slash { color: var(--logo-mark-color); font-weight: 800; margin: 0 1px; position: relative; top: -0.02em; transition: color var(--transition), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-block; }
+        
+        .logo-mark {
+            display: inline-flex; align-items: center; justify-content: center;
+            font-family: var(--font); font-weight: 800; font-size: 1.7em; line-height: 1; letter-spacing: -6px;
+            color: var(--logo-mark-color); position: relative;
+            animation: logoPulse 3.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+            will-change: transform;
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 0 rgba(3, 250, 110, 0)); }
+            40% { transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 14px rgba(3, 250, 110, 0.45)); }
+            70% { transform: scale(1.04) rotate(1deg); filter: drop-shadow(0 0 8px rgba(3, 250, 110, 0.25)); }
+        }
+
+        .logo-mark .slash {
+            color: var(--logo-mark-color); font-weight: 800; margin: 0 1px; position: relative; top: -0.02em;
+            display: inline-block;
+            animation: slashShift 3.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+            will-change: transform, color;
+        }
+        @keyframes slashShift {
+            0%, 100% { transform: translateX(0) rotate(0deg); text-shadow: 0 0 0 transparent; }
+            40% { transform: translateX(2px) rotate(8deg); text-shadow: 0 0 14px var(--color-primary); }
+        }
+
         .logo-text { display: inline-flex; flex-direction: column; line-height: 1; position: relative; z-index: 1; }
         .logo-text .brand { font-family: var(--font); font-weight: 700; font-size: 1em; letter-spacing: -0.5px; color: var(--text-primary); transition: color var(--transition), transform var(--transition); position: relative; display: inline-block; }
         .logo-text .brand::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 100%; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .logo:hover .logo-text .brand::after { transform: scaleX(1); }
-        .logo-text .brand-sub { font-family: var(--font); font-weight: 500; font-size: 0.62em; letter-spacing: 0.5px; color: var(--logo-sub-color); margin-top: 2px; transition: color var(--transition), letter-spacing var(--transition); }
-        .logo:hover .logo-mark { animation: logoPulse 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; filter: drop-shadow(0 0 12px rgba(3, 250, 110, 0.5)); }
-        @keyframes logoPulse { 0%, 100% { transform: scale(1.04) rotate(0deg); } 50% { transform: scale(1.08) rotate(-2deg); } }
-        .logo:hover .logo-mark .slash { color: var(--color-primary); text-shadow: 0 0 14px var(--color-primary); transform: translateX(2px) rotate(8deg); }
+        
+        .logo-text .brand-sub {
+            font-family: var(--font); font-weight: 500; font-size: 0.62em; letter-spacing: 0.5px;
+            color: var(--logo-sub-color); margin-top: 2px;
+            animation: subLetter 3.5s ease-in-out infinite;
+            will-change: letter-spacing, color;
+        }
+        @keyframes subLetter {
+            0%, 100% { letter-spacing: 0.5px; color: var(--logo-sub-color); }
+            50% { letter-spacing: 1.5px; color: var(--color-primary); }
+        }
+
         .logo:hover .logo-text .brand { color: var(--color-primary); transform: translateX(2px); }
-        .logo:hover .logo-text .brand-sub { color: var(--color-primary); letter-spacing: 1.5px; }
 
         .footer-brand .logo { font-size: 1.8rem; }
-        .footer-brand .logo .logo-mark { animation: none; }
+        .footer-brand .logo-mark { animation-duration: 4.5s; }
 
         .nav-links { display: flex; gap: 28px; align-items: center; list-style: none; }
         .nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--text-secondary); transition: color var(--transition); position: relative; }
@@ -212,7 +241,7 @@
         .client-services li i { color: var(--color-primary); font-size: 0.7rem; margin-top: 6px; flex-shrink: 0; }
 
         /* PRICING */
-        .pricing { position: relative; z-index: 1; padding: 80px 0; }
+        .pricing { position: relative; z-index: 1; padding: 80px 0; background: var(--bg-secondary); transition: background var(--transition); }
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
         .pricing-card { background: var(--bg-card-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 36px 30px; transition: var(--transition); display: flex; flex-direction: column; position: relative; box-shadow: var(--shadow-glass); }
         .pricing-card.featured { border-color: var(--color-primary); box-shadow: 0 20px 60px rgba(3, 250, 110, 0.15); transform: translateY(-8px); }
@@ -284,7 +313,7 @@
         .btn-add { background: var(--color-primary); color: #011a0c; border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 1rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .btn-add:hover { background: var(--color-primary-light); transform: scale(1.1); box-shadow: 0 8px 24px rgba(3, 250, 110, 0.35); }
 
-        /* TOAST NOTIFICACIÓN */
+        /* TOAST */
         .toast-container { position: fixed; bottom: 28px; right: 94px; z-index: 99996; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--color-primary); border-radius: 14px; padding: 12px 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45); display: flex; align-items: center; gap: 12px; font-size: 0.88rem; pointer-events: auto; animation: toastIn 0.3s ease; max-width: 340px; }
         .toast i { color: var(--color-primary); font-size: 1.05rem; flex-shrink: 0; }
@@ -920,13 +949,11 @@
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.535381852288!2d-99.1337!3d19.4326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f92f8b5d6f8d%3A0x8f8f8f8f8f8f8f8f!2sCiudad%20de%20M%C3%A9xico!5e0!3m2!1ses!2smx!4v1680000000000" allowfullscreen loading="lazy" title="Mapa de Ciudad de México"></iframe>
                     </div>
                 </div>
-                <form class="contact-form reveal" id="contactForm" action="https://formspree.io/f/TU_ID_DE_FORMSPREE" method="POST" novalidate>
+                <form class="contact-form reveal" id="contactForm" novalidate>
                     <input type="text" name="name" id="fName" placeholder="Nombre completo" required>
                     <input type="email" name="email" id="fEmail" placeholder="Correo electrónico" required>
                     <input type="tel" name="phone" id="fPhone" placeholder="Teléfono (opcional)">
                     <textarea name="message" id="fMessage" placeholder="Cuéntanos tu proyecto..." required></textarea>
-                    <input type="hidden" name="_subject" value="Nuevo mensaje desde MZG Systems">
-                    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
                     <button type="submit" id="submitBtn">Enviar mensaje</button>
                     <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
                 </form>
@@ -998,7 +1025,12 @@
     </div>
 
     <script>
-        /* ============ CONFIGURACIÓN GENERAL ============ */
+        /* ============================================================
+           CONFIGURACIÓN Y CONEXIÓN CON EL DASHBOARD (Google Sheets)
+           ============================================================ */
+        const MZG_API_URL = 'https://script.google.com/macros/s/AKfycbxbYBqYx1uTF2TfzC34zwgqsk-s76UHvQ0dVhirC8qQGWxY1IQnq1eVjb_c5WPpy8if/exec';
+        const MZG_API_KEY = 'MZG_2026_aK9mP2vN8qL4xR7tY5wZ3bC1'; 
+        
         const WHATSAPP_NUMBER = '5215512345678';
         const SITE_DOMAIN = 'mzgsys.com.mx';
         const SITE_EMAIL = 'info@mzgsys.com.mx';
@@ -1373,22 +1405,35 @@
                 formStatus.innerHTML = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Revisa los campos marcados.';
                 return;
             }
-            if (contactForm.action.includes('TU_ID_DE_FORMSPREE')) {
-                formStatus.className = 'form-status error';
-                formStatus.innerHTML = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Configura tu ID de Formspree en el atributo action.';
-                return;
-            }
+            
             const original = submitBtn.textContent;
             submitBtn.disabled = true; submitBtn.textContent = 'Enviando...';
             formStatus.className = 'form-status'; formStatus.style.display = 'none';
+
             try {
-                const res = await fetch(contactForm.action, { method: 'POST', body: new FormData(contactForm), headers: { 'Accept': 'application/json' } });
-                if (res.ok) {
+                const payload = {
+                    apiKey: MZG_API_KEY,
+                    accion: 'nuevo_contacto',
+                    nombre: document.getElementById('fName').value.trim(),
+                    email: document.getElementById('fEmail').value.trim(),
+                    telefono: document.getElementById('fPhone').value.trim(),
+                    mensaje: document.getElementById('fMessage').value.trim()
+                };
+                
+                const res = await fetch(MZG_API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    redirect: 'follow'
+                });
+                
+                const data = await res.json();
+                
+                if (data.ok) {
                     formStatus.className = 'form-status success';
                     formStatus.innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i> ¡Gracias! Tu mensaje fue enviado.';
                     contactForm.reset();
                 } else {
-                    const data = await res.json().catch(() => ({}));
                     throw new Error(data.error || 'Error al enviar');
                 }
             } catch (err) {
@@ -1641,7 +1686,7 @@
             }
         });
 
-        /* ============ GENERAR ORDEN PDF + ENLACE WHATSAPP ============ */
+        /* ============ GENERAR ORDEN PDF + CONEXIÓN CON EL DASHBOARD ============ */
         function showCartError(msg) {
             cartError.textContent = msg;
             cartError.classList.add('show');
@@ -1662,7 +1707,7 @@
             generatePDF({ name, email, phone: cPhone.value.trim(), rfc: cRfc.value.trim().toUpperCase() });
         });
 
-        function generatePDF(customer) {
+        async function generatePDF(customer) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
@@ -1801,6 +1846,31 @@
             doc.text(`${SITE_DOMAIN} · ${SITE_EMAIL}`, 105, y + 11, { align: 'center' });
 
             doc.save('Orden-' + orderNum + '.pdf');
+
+            // ====================================================================
+            // CONEXIÓN CON EL DASHBOARD: Enviar el pedido a Google Sheets
+            // ====================================================================
+            try {
+                await fetch(MZG_API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        apiKey: MZG_API_KEY,
+                        accion: 'nuevo_pedido',
+                        id_pedido: orderNum,
+                        cliente_nombre: customer.name,
+                        cliente_email: customer.email,
+                        cliente_telefono: customer.phone || '',
+                        cliente_rfc: customer.rfc || '',
+                        items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+                        notas: ''
+                    }),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    redirect: 'follow'
+                });
+            } catch (e) {
+                console.warn('No se pudo registrar el pedido en el Sheet:', e);
+            }
+            // ====================================================================
 
             // Preparar enlace directo a WhatsApp con el resumen de la orden
             const itemsList = cart.map(i => `• ${i.qty}x ${i.name} (${formatMoney(i.price * i.qty)})`).join('\n');
