@@ -1156,21 +1156,27 @@ async function apiPost(payload) {
     });
     return res.json();
 }
+// IMPORTANTE: Mantén la palabra "async" al principio
 async function apiGet(accion, extra = {}) {
-    const params = new URLSearchParams({ accion, apiKey: API_KEY, ...extra });
-    const url = `${API_URL}?${params.toString()}`;
-    
-    const res = await fetch(url, {
-        method: 'GET',
-        redirect: 'follow'
-    });
-    
-    const text = await res.text();
     try {
-        return JSON.parse(text);
-    } catch (e) {
-        console.error("Respuesta recibida (no es JSON):", text);
-        throw new Error("Error de conexión con Google. Revisa la URL.");
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            // Usamos 'text/plain' para evitar el bloqueo de CORS de Google
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ ...extra, apiKey: API_KEY, accion: accion }),
+            redirect: 'follow'
+        });
+        
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("La respuesta no es JSON válido. Revisa que tu Web App esté implementada como 'Cualquier persona':", text);
+            throw new Error("Error de autenticación en Google");
+        }
+    } catch (error) {
+        console.error("Error de red:", error);
+        throw error;
     }
 }
 function showToast(msg, tipo = 'success') {
