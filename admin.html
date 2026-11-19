@@ -1144,21 +1144,27 @@ function badgeEstado(estado) {
     };
     return `<span class="badge ${m[estado] || 'badge-pending'}">${escapeHtml(estado || '—')}</span>`;
 }
-
 async function apiGet(accion, extra = {}) {
     const params = new URLSearchParams({ accion, apiKey: API_KEY, ...extra });
+    const url = `${API_URL}?${params.toString()}`;
     
-    // Usamos 'text/plain' y 'follow' para evitar la verificación OPTIONS y permitir la redirección
-    const res = await fetch(`${API_URL}?${params.toString()}`, {
-        method: 'GET',
-        mode: 'cors',
-        redirect: 'follow',
-        headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("Respuesta no es JSON (probablemente HTML de login):", text);
+            throw new Error("Error de autenticación en Google");
         }
-    });
-    return res.json();
-}
+    } catch (error) {
+        console.error("Fallo en apiGet:", error);
+        throw error;
+    }
 }
 
 async function apiPost(payload) {
@@ -1189,15 +1195,20 @@ function showToast(msg, tipo = 'success') {
    LOGIN
    ============================================================ */
 async function verificarSesion() {
-    const r = await apiGet('estadisticas');
-    if (r.ok) {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('app').classList.remove('hidden');
-        await loadAll();
-        startAutoRefresh();
-        return true;
+    try {
+        const r = await apiGet('estadisticas');
+        if (r.ok) {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            await loadAll();
+            startAutoRefresh();
+            return true;
+        }
+        return false;
+    } catch (e) {
+        console.error("Error de sesión:", e);
+        return false;
     }
-    return false;
 }
 
 document.getElementById('loginBtn').addEventListener('click', async () => {
@@ -1211,7 +1222,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
     try {
         const ok = await verificarSesion();
         if (!ok) {
-            err.textContent = 'API key incorrecta. Intenta de nuevo.';
+            err.textContent = 'API key incorrecta o error de conexión.';
             API_KEY = '';
         } else {
             localStorage.setItem(LS_KEY, key);
