@@ -8,11 +8,12 @@
     <!-- SEO + Open Graph -->
     <meta name="description" content="MZG Systems · Soporte TI, seguridad, redes, desarrollo web, domótica e invitaciones digitales en CDMX y Área Metropolitana.">
     <meta name="theme-color" content="#03fa6e">
+    <link rel="canonical" href="https://mzgsys.com.mx/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="MZG Systems · Soluciones tecnológicas avanzadas">
     <meta property="og:description" content="Protegemos, optimizamos y modernizamos tu entorno profesional con un estándar de excelencia.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80&auto=format&fit=crop">
-    <meta property="og:url" content="https://mzgsystems.com">
+    <meta property="og:url" content="https://mzgsys.com.mx">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -143,7 +144,7 @@
         .nav-links a:hover { color: var(--text-primary); }
         .nav-links a:hover::after { width: 100%; }
 
-        .theme-toggle, .cart-btn { background: none; border: none; color: var(--text-secondary); font-size: 1.3rem; cursor: pointer; transition: color var(--transition); padding: 4px 8px; position: relative; }
+        .theme-toggle, .cart-btn { background: none; border: none; color: var(--text-secondary); font-size: 1.3rem; cursor: pointer; transition: color var(--transition), transform 0.25s ease; padding: 4px 8px; position: relative; }
         .theme-toggle:hover, .cart-btn:hover { color: var(--color-primary); }
         .cart-count { position: absolute; top: -6px; right: -4px; background: var(--color-primary); color: #011a0c; font-size: 0.65rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 5px; line-height: 1; }
 
@@ -163,7 +164,7 @@
         .hero h1 .highlight::after { content: ''; position: absolute; bottom: 6px; left: 0; width: 100%; height: 8px; background: var(--color-primary); opacity: 0.2; border-radius: 4px; }
         .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 540px; margin-bottom: 40px; line-height: 1.8; }
         .hero-buttons { display: flex; flex-wrap: wrap; gap: 16px; }
-        .btn-primary, .btn-secondary { display: inline-block; padding: 14px 40px; border-radius: 50px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; font-family: var(--font); }
+        .btn-primary, .btn-secondary { display: inline-block; padding: 14px 40px; border-radius: 50px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; font-family: var(--font); text-align: center; }
         .btn-primary { background: var(--color-primary); color: #011a0c; box-shadow: 0 4px 20px rgba(3, 250, 110, 0.3); }
         .btn-primary:hover { background: var(--color-primary-light); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(3, 250, 110, 0.4); }
         .btn-secondary { background: transparent; color: var(--text-primary); border: 2px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px); }
@@ -175,7 +176,7 @@
         .section-header { text-align: center; margin-bottom: 56px; }
         .section-header .section-subtitle { margin-left: auto; margin-right: auto; }
 
-        /* TRUST STRIP (testimonio arriba) */
+        /* TRUST STRIP */
         .trust-strip { position: relative; z-index: 1; padding: 40px 0; border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass); }
         .trust-inner { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px 56px; }
         .trust-item { display: flex; align-items: center; gap: 12px; color: var(--text-secondary); font-weight: 600; font-size: 0.95rem; }
@@ -235,11 +236,14 @@
         [data-theme="light"] .filter-btn { background: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.1); }
         [data-theme="light"] .filter-btn:hover, [data-theme="light"] .filter-btn.active { background: var(--color-primary-dark); color: #ffffff; border-color: var(--color-primary-dark); }
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .service-card { background: var(--bg-card-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: var(--radius); border: 1px solid var(--border-glass); transition: var(--transition); position: relative; overflow: hidden; box-shadow: var(--shadow-glass); cursor: pointer; display: flex; flex-direction: column; }
+        .service-card { background: var(--bg-card-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: var(--radius); border: 1px solid var(--border-glass); transition: var(--transition); position: relative; overflow: hidden; box-shadow: var(--shadow-glass); cursor: pointer; display: flex; flex-direction: column; animation: cardFadeIn 0.35s ease forwards; }
+        .service-card.is-hidden { display: none; }
+        @keyframes cardFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--color-primary), transparent); transform: scaleX(0); transform-origin: center; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 3; }
         .service-card:hover::before { transform: scaleX(1); }
-        .service-image { position: relative; width: 100%; height: 200px; overflow: hidden; flex-shrink: 0; }
+        .service-image { position: relative; width: 100%; height: 200px; overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, rgba(3, 250, 110, 0.15), rgba(1, 75, 33, 0.45)); display: flex; align-items: center; justify-content: center; }
         .service-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s ease; filter: saturate(0.85) brightness(0.85) contrast(1.05); }
+        .service-image.img-fallback::before { content: '\f121'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 2.5rem; color: var(--color-primary); opacity: 0.6; }
         .service-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10, 14, 10, 0.15) 0%, rgba(10, 14, 10, 0.4) 50%, var(--bg-card-glass) 100%); pointer-events: none; transition: opacity 0.6s ease; }
         [data-theme="light"] .service-image::after { background: linear-gradient(to bottom, rgba(240, 247, 240, 0.05) 0%, rgba(240, 247, 240, 0.2) 50%, rgba(255, 255, 255, 0.7) 100%); }
         .service-card:hover .service-image img { transform: scale(1.08); filter: saturate(1.15) brightness(1.05) contrast(1.05); }
@@ -255,18 +259,37 @@
         /* TIENDA */
         .store { position: relative; z-index: 1; padding: 80px 0; }
         .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-        .product-card { background: var(--bg-card-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 26px 22px; transition: var(--transition); display: flex; flex-direction: column; box-shadow: var(--shadow-glass); position: relative; overflow: hidden; }
+
+        /* PRODUCT CARD CON IMAGEN */
+        .product-card { background: var(--bg-card-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 0; transition: var(--transition); display: flex; flex-direction: column; box-shadow: var(--shadow-glass); position: relative; overflow: hidden; }
         .product-card:hover { transform: translateY(-8px); border-color: var(--color-primary); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(3, 250, 110, 0.12); }
-        .product-icon { width: 60px; height: 60px; border-radius: 16px; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: #011a0c; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 18px; transition: var(--transition); }
-        .product-card:hover .product-icon { transform: scale(1.08) rotate(-4deg); }
+
+        .product-image { position: relative; width: 100%; height: 165px; overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, rgba(3, 250, 110, 0.15), rgba(1, 75, 33, 0.45)); display: flex; align-items: center; justify-content: center; cursor: zoom-in; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s ease; filter: saturate(0.85) brightness(0.85) contrast(1.05); }
+        .product-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10, 14, 10, 0.1) 0%, rgba(10, 14, 10, 0.3) 60%, var(--bg-card-glass) 100%); pointer-events: none; transition: opacity 0.6s ease; }
+        [data-theme="light"] .product-image::after { background: linear-gradient(to bottom, rgba(240, 247, 240, 0.05) 0%, rgba(240, 247, 240, 0.15) 60%, rgba(255, 255, 255, 0.6) 100%); }
+        .product-card:hover .product-image img { transform: scale(1.08); filter: saturate(1.15) brightness(1.05); }
+        .product-card:hover .product-image::after { opacity: 0.85; }
+        .product-image.img-fallback i { font-size: 3rem; color: var(--color-primary); opacity: 0.7; position: relative; z-index: 1; }
+        .product-image .zoom-hint { position: absolute; top: 12px; right: 12px; z-index: 3; width: 34px; height: 34px; border-radius: 50%; background: rgba(1, 26, 12, 0.7); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; opacity: 0; transform: scale(0.85); transition: var(--transition); backdrop-filter: blur(6px); pointer-events: none; }
+        .product-card:hover .zoom-hint { opacity: 1; transform: scale(1); }
+
+        .product-body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex-grow: 1; position: relative; z-index: 2; }
         .product-cat { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-primary); margin-bottom: 6px; }
         .product-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
         .product-card p { color: var(--text-secondary); font-size: 0.88rem; flex-grow: 1; margin-bottom: 16px; }
         .product-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
         .product-price { font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
         .product-price small { font-size: 0.7rem; font-weight: 500; color: var(--text-secondary); display: block; line-height: 1; }
-        .btn-add { background: var(--color-primary); color: #011a0c; border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 1rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+        .btn-add { background: var(--color-primary); color: #011a0c; border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 1rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .btn-add:hover { background: var(--color-primary-light); transform: scale(1.1); box-shadow: 0 8px 24px rgba(3, 250, 110, 0.35); }
+
+        /* TOAST NOTIFICACIÓN */
+        .toast-container { position: fixed; bottom: 28px; right: 94px; z-index: 99996; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--color-primary); border-radius: 14px; padding: 12px 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45); display: flex; align-items: center; gap: 12px; font-size: 0.88rem; pointer-events: auto; animation: toastIn 0.3s ease; max-width: 340px; }
+        .toast i { color: var(--color-primary); font-size: 1.05rem; flex-shrink: 0; }
+        .toast-action { background: none; border: none; color: var(--color-primary); font-weight: 700; font-family: var(--font); font-size: 0.82rem; cursor: pointer; text-decoration: underline; margin-left: auto; white-space: nowrap; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
         /* CART DRAWER */
         .cart-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 99997; opacity: 0; visibility: hidden; transition: var(--transition); }
@@ -282,7 +305,9 @@
         .cart-empty { text-align: center; color: var(--text-secondary); padding: 60px 20px; font-size: 0.95rem; }
         .cart-empty i { font-size: 3rem; color: var(--border-glass); margin-bottom: 16px; display: block; }
         .cart-item { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border-glass); align-items: center; }
-        .cart-item-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--bg-card-glass); border: 1px solid var(--border-glass); display: flex; align-items: center; justify-content: center; color: var(--color-primary); flex-shrink: 0; }
+        .cart-item-img { width: 48px; height: 48px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: var(--bg-card-glass); border: 1px solid var(--border-glass); display: flex; align-items: center; justify-content: center; }
+        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .cart-item-img i { color: var(--color-primary); font-size: 1rem; }
         .cart-item-info { flex: 1; min-width: 0; }
         .cart-item-info h4 { font-size: 0.9rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .cart-item-info span { font-size: 0.8rem; color: var(--text-secondary); }
@@ -302,10 +327,32 @@
         .cart-checkout-form input { width: 100%; padding: 10px 14px; background: var(--bg-dark); border: 1px solid var(--border-glass); border-radius: 10px; color: var(--text-primary); font-size: 0.9rem; font-family: var(--font); }
         .cart-checkout-form input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(3, 250, 110, 0.15); }
         .cart-checkout-form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .cart-actions { display: flex; flex-direction: column; gap: 10px; }
         .cart-footer .btn-primary { width: 100%; padding: 14px 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .cart-footer .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .cart-error { color: #ff4d4d; font-size: 0.8rem; margin-top: 6px; display: none; }
+        .btn-whatsapp-order { width: 100%; padding: 12px 18px; border-radius: 50px; border: 1px solid #25D366; background: rgba(37, 211, 102, 0.12); color: #25D366; font-weight: 600; font-size: 0.92rem; font-family: var(--font); cursor: pointer; transition: var(--transition); display: none; align-items: center; justify-content: center; gap: 10px; text-decoration: none; }
+        .btn-whatsapp-order.show { display: flex; }
+        .btn-whatsapp-order:hover { background: #25D366; color: #011a0c; transform: translateY(-2px); }
+        .btn-clear-cart { background: none; border: none; color: var(--text-secondary); font-size: 0.8rem; font-family: var(--font); cursor: pointer; text-align: center; padding: 4px; transition: color var(--transition); display: none; }
+        .btn-clear-cart.show { display: block; }
+        .btn-clear-cart:hover { color: #ff4d4d; }
+        .cart-error { color: #ff4d4d; font-size: 0.8rem; margin-bottom: 8px; display: none; }
         .cart-error.show { display: block; }
+
+        /* LIGHTBOX */
+        .lightbox { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999995; display: none; justify-content: center; align-items: center; padding: 40px 90px; opacity: 0; transition: opacity 0.3s ease; }
+        .lightbox.open { display: flex; opacity: 1; }
+        .lightbox-figure { max-width: 100%; max-height: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; animation: lightboxZoom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); margin: 0; }
+        .lightbox-figure img { max-width: 100%; max-height: calc(100vh - 180px); object-fit: contain; border-radius: 14px; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(3, 250, 110, 0.2); display: block; }
+        .lightbox-figure figcaption { color: #fff; font-size: 1.05rem; font-weight: 500; text-align: center; padding: 10px 20px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 50px; backdrop-filter: blur(8px); max-width: 90%; }
+        .lightbox-counter { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); color: rgba(255, 255, 255, 0.7); font-size: 0.82rem; letter-spacing: 1px; font-weight: 500; background: rgba(255, 255, 255, 0.06); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        @keyframes lightboxZoom { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; font-size: 1.6rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); z-index: 2; backdrop-filter: blur(8px); }
+        .lightbox-close:hover { background: var(--color-primary); color: #011a0c; border-color: var(--color-primary); transform: scale(1.08); }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); backdrop-filter: blur(8px); }
+        .lightbox-nav:hover { background: var(--color-primary); color: #011a0c; border-color: var(--color-primary); }
+        .lightbox-nav.lightbox-prev { left: 20px; }
+        .lightbox-nav.lightbox-next { right: 20px; }
 
         /* COMMITMENT */
         .commitment { position: relative; z-index: 1; padding: 80px 0; text-align: center; background: var(--bg-secondary); transition: background var(--transition); }
@@ -425,9 +472,16 @@
             .modal-content { padding: 24px; margin: 10px; }
             .whatsapp-tooltip { display: none; }
             .whatsapp-float { width: 58px; height: 58px; font-size: 1.7rem; bottom: 20px; left: 20px; }
+            .toast-container { right: 16px; left: 16px; bottom: 90px; align-items: center; }
             .logo { font-size: 1.6rem; gap: 10px; }
             .logo-mark { font-size: 1.5em; }
             .cart-drawer { width: 100%; }
+            .lightbox { padding: 60px 16px 90px; }
+            .lightbox-nav { width: 44px; height: 44px; font-size: 1rem; }
+            .lightbox-nav.lightbox-prev { left: 8px; }
+            .lightbox-nav.lightbox-next { right: 8px; }
+            .lightbox-close { width: 42px; height: 42px; top: 14px; right: 14px; font-size: 1.4rem; }
+            .lightbox-figure img { max-height: calc(100vh - 200px); }
         }
         @media (max-width: 480px) {
             .hero-buttons { flex-direction: column; width: 100%; }
@@ -437,6 +491,7 @@
             .filter-buttons { gap: 8px; }
             .filter-btn { padding: 6px 16px; font-size: 0.8rem; }
             .service-image { height: 170px; }
+            .product-image { height: 145px; }
             .trust-inner { gap: 24px 32px; }
         }
     </style>
@@ -448,9 +503,10 @@
     <canvas id="particles-canvas"></canvas>
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
     <a href="https://wa.me/5215512345678?text=Hola%20MZG%20Systems,%20me%20interesa%20sus%20servicios"
-       class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+       class="whatsapp-float" id="whatsappFloat" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
         <i class="fab fa-whatsapp" aria-hidden="true"></i>
     </a>
     <div class="whatsapp-tooltip">Escríbenos por WhatsApp</div>
@@ -507,7 +563,7 @@
         </div>
     </section>
 
-    <!-- TRUST STRIP: Prueba social arriba -->
+    <!-- TRUST STRIP -->
     <section class="trust-strip" aria-label="Empresas que confían en nosotros">
         <div class="container">
             <p class="trust-tagline">Empresas que confían en nosotros</p>
@@ -570,7 +626,7 @@
                         <li><i class="fas fa-check" aria-hidden="true"></i> Mantenimiento mensual</li>
                         <li><i class="fas fa-check" aria-hidden="true"></i> Respuesta en 24 h</li>
                     </ul>
-                    <a href="#tienda" class="btn-primary">Adquirir plan</a>
+                    <button type="button" class="btn-primary add-plan-btn" data-plan-id="p2">Adquirir plan</button>
                 </div>
                 <div class="pricing-card featured reveal">
                     <span class="pricing-tag">Popular</span>
@@ -584,7 +640,7 @@
                         <li><i class="fas fa-check" aria-hidden="true"></i> Respaldos automáticos</li>
                         <li><i class="fas fa-check" aria-hidden="true"></i> Asesoría mensual 1 h</li>
                     </ul>
-                    <a href="#tienda" class="btn-primary">Adquirir plan</a>
+                    <button type="button" class="btn-primary add-plan-btn" data-plan-id="plan-empresarial">Adquirir plan</button>
                 </div>
                 <div class="pricing-card reveal">
                     <span class="pricing-tag">A medida</span>
@@ -668,7 +724,7 @@
                 <button class="filter-btn" data-filter="eventos">Eventos</button>
             </div>
             <div class="services-grid" id="servicesGrid">
-                <div class="service-card reveal" data-category="soporte" data-service="soporte">
+                <div class="service-card reveal" data-category="soporte" data-service="soporte" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&q=75&auto=format&fit=crop" alt="Soporte y Sistemas" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Soporte y Sistemas</h3>
@@ -676,7 +732,7 @@
                         <span class="category-tag">Soporte</span>
                     </div>
                 </div>
-                <div class="service-card reveal" data-category="seguridad" data-service="seguridad">
+                <div class="service-card reveal" data-category="seguridad" data-service="seguridad" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&q=75&auto=format&fit=crop" alt="Seguridad y Redes" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Seguridad y Redes</h3>
@@ -684,7 +740,7 @@
                         <span class="category-tag">Seguridad</span>
                     </div>
                 </div>
-                <div class="service-card reveal" data-category="domotica" data-service="domotica">
+                <div class="service-card reveal" data-category="domotica" data-service="domotica" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=500&q=75&auto=format&fit=crop" alt="Espacios Inteligentes" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Espacios Inteligentes</h3>
@@ -692,7 +748,7 @@
                         <span class="category-tag">Domótica</span>
                     </div>
                 </div>
-                <div class="service-card reveal" data-category="web" data-service="web">
+                <div class="service-card reveal" data-category="web" data-service="web" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=500&q=75&auto=format&fit=crop" alt="Desarrollo Web" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Desarrollo Web</h3>
@@ -700,7 +756,7 @@
                         <span class="category-tag">Web</span>
                     </div>
                 </div>
-                <div class="service-card reveal" data-category="web" data-service="postproduccion">
+                <div class="service-card reveal" data-category="web" data-service="postproduccion" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=500&q=75&auto=format&fit=crop" alt="Postproducción Digital" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Postproducción Digital</h3>
@@ -708,7 +764,7 @@
                         <span class="category-tag">Web</span>
                     </div>
                 </div>
-                <div class="service-card reveal" data-category="soporte" data-service="consultoria">
+                <div class="service-card reveal" data-category="soporte" data-service="consultoria" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&q=75&auto=format&fit=crop" alt="Consultoría Tecnológica" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Consultoría Tecnológica</h3>
@@ -716,7 +772,7 @@
                         <span class="category-tag">Soporte</span>
                     </div>
                 </div>
-                <div class="service-card reveal" data-category="eventos" data-service="invitaciones">
+                <div class="service-card reveal" data-category="eventos" data-service="invitaciones" tabindex="0" role="button">
                     <div class="service-image"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&q=75&auto=format&fit=crop" alt="Invitaciones Digitales" loading="lazy" decoding="async"></div>
                     <div class="service-body">
                         <h3>Invitaciones Digitales</h3>
@@ -736,15 +792,13 @@
                 <h2 class="section-title">Compra directa, sin complicaciones</h2>
                 <p class="section-subtitle">Agrega productos al carrito, revisa tu resumen con IVA incluido y descarga tu orden en PDF al instante. Sin registros, sin esperas.</p>
             </div>
-            <div class="store-grid" id="storeGrid">
-                <!-- Productos inyectados por JS -->
-            </div>
+            <div class="store-grid" id="storeGrid"></div>
         </div>
     </section>
 
     <!-- CARRITO -->
     <div class="cart-overlay" id="cartOverlay"></div>
-    <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras">
+    <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras">
         <div class="cart-header">
             <h3><i class="fas fa-shopping-cart" aria-hidden="true"></i> Tu carrito</h3>
             <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">&times;</button>
@@ -769,12 +823,34 @@
                     <input type="text" id="cRfc" placeholder="RFC (opcional)">
                 </div>
             </div>
-            <div class="cart-error" id="cartError"></div>
-            <button class="btn-primary" id="checkoutBtn" disabled>
-                <i class="fas fa-file-pdf" aria-hidden="true"></i> Descargar orden PDF
-            </button>
+            <div class="cart-error" id="cartError" role="alert"></div>
+            <div class="cart-actions">
+                <button class="btn-primary" id="checkoutBtn" disabled>
+                    <i class="fas fa-file-pdf" aria-hidden="true"></i> Descargar orden PDF
+                </button>
+                <a href="#" class="btn-whatsapp-order" id="whatsappOrderBtn" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> Enviar orden por WhatsApp
+                </a>
+                <button type="button" class="btn-clear-cart" id="clearCartBtn">Vaciar carrito</button>
+            </div>
         </div>
     </aside>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" aria-hidden="true">
+        <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Anterior">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Siguiente">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
+        <figure class="lightbox-figure">
+            <img src="" alt="" id="lightboxImg">
+            <figcaption id="lightboxTitle"></figcaption>
+        </figure>
+    </div>
 
     <section class="commitment" id="commitment">
         <div class="container reveal">
@@ -812,7 +888,7 @@
                 </details>
                 <details class="faq-item">
                     <summary>¿Cómo funciona la orden en PDF?</summary>
-                    <p>Al finalizar tu compra en la tienda, descargas un PDF con tu resumen: productos, cantidades, subtotal, IVA del 16% y total. Es tu comprobante formal de la orden. Después te contactamos para coordinar pago y entrega.</p>
+                    <p>Al finalizar tu compra en la tienda, descargas un PDF con tu resumen: productos, cantidades, subtotal, IVA del 16% y total. Es tu comprobante formal de la orden. Después puedes enviárnoslo directo por WhatsApp para coordinar pago y entrega.</p>
                 </details>
                 <details class="faq-item">
                     <summary>¿Qué métodos de pago aceptan?</summary>
@@ -838,7 +914,7 @@
                     <h3>¿Listo para transformar tu entorno?</h3>
                     <p>Estamos aquí para ayudarte. Contáctanos por cualquiera de estos medios o llena el formulario y te responderemos a la brevedad.</p>
                     <div class="contact-item"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>+52 55 1234 5678</span></div>
-                    <div class="contact-item"><i class="fas fa-envelope" aria-hidden="true"></i><span>info@mzgsystems.com</span></div>
+                    <div class="contact-item"><i class="fas fa-envelope" aria-hidden="true"></i><span>info@mzgsys.com.mx</span></div>
                     <div class="contact-item"><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>Ciudad de México y Área Metropolitana</span></div>
                     <div class="contact-map">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.535381852288!2d-99.1337!3d19.4326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f92f8b5d6f8d%3A0x8f8f8f8f8f8f8f8f!2sCiudad%20de%20M%C3%A9xico!5e0!3m2!1ses!2smx!4v1680000000000" allowfullscreen loading="lazy" title="Mapa de Ciudad de México"></iframe>
@@ -892,12 +968,12 @@
                 <div class="footer-social">
                     <h4>Síguenos</h4>
                     <div class="social-icons">
-                        <a href="#" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="X" target="_blank" rel="noopener"><i class="fab fa-x-twitter" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#contact" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="#contact" aria-label="X"><i class="fab fa-x-twitter" aria-hidden="true"></i></a>
+                        <a href="#contact" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#contact" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
                     </div>
-                    <p class="footer-email"><i class="fas fa-envelope" aria-hidden="true"></i> info@mzgsystems.com</p>
+                    <p class="footer-email"><i class="fas fa-envelope" aria-hidden="true"></i> info@mzgsys.com.mx</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -922,34 +998,133 @@
     </div>
 
     <script>
+        /* ============ CONFIGURACIÓN GENERAL ============ */
+        const WHATSAPP_NUMBER = '5215512345678';
+        const SITE_DOMAIN = 'mzgsys.com.mx';
+        const SITE_EMAIL = 'info@mzgsys.com.mx';
+
         /* ============ LOADER + AÑO ============ */
         window.addEventListener('load', () => document.getElementById('loader').classList.add('hide'));
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        /* ============ PARTICLES ============ */
+        /* ============ RESPALDO DE IMÁGENES SERVICIOS ============ */
+        document.querySelectorAll('.service-image img').forEach(img => {
+            img.addEventListener('error', () => {
+                img.style.display = 'none';
+                img.parentElement.classList.add('img-fallback');
+            });
+        });
+
+        /* ============ TOAST HELPER ============ */
+        const toastContainer = document.getElementById('toastContainer');
+        function showToast(message, actionText, actionCallback) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle" aria-hidden="true"></i><span>${message}</span>`;
+            if (actionText && actionCallback) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'toast-action';
+                btn.textContent = actionText;
+                btn.addEventListener('click', () => {
+                    toast.remove();
+                    actionCallback();
+                });
+                toast.appendChild(btn);
+            }
+            toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                setTimeout(() => toast.remove(), 260);
+            }, 3200);
+        }
+
+        /* ============ PARTICLES OPTIMIZADAS ============ */
         let particleColor = '#03fa6e';
         function setParticleColor(c) { particleColor = c; }
         (function initParticles() {
             const canvas = document.getElementById('particles-canvas');
             const ctx = canvas.getContext('2d');
-            let w, h; const particles = []; const count = 70;
-            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-            window.addEventListener('resize', resize); resize();
-            class Particle {
-                constructor() { this.x = Math.random()*w; this.y = Math.random()*h; this.size = Math.random()*2+0.5; this.speedX = (Math.random()-0.5)*0.4; this.speedY = (Math.random()-0.5)*0.4; this.opacity = Math.random()*0.5+0.15; }
-                update() { this.x += this.speedX; this.y += this.speedY; if (this.x<0||this.x>w) this.speedX*=-1; if (this.y<0||this.y>h) this.speedY*=-1; }
-                draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle = `rgba(${hexToRgb(particleColor)}, ${this.opacity})`; ctx.fill(); }
+            let w, h, animId = null;
+            const isMobile = window.innerWidth < 768;
+            const count = isMobile ? 28 : 65;
+            const linkDist = isMobile ? 110 : 140;
+            const particles = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
             }
-            function hexToRgb(hex) { const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex); return r?`${parseInt(r[1],16)}, ${parseInt(r[2],16)}, ${parseInt(r[3],16)}`:'3, 250, 110'; }
-            for (let i=0;i<count;i++) particles.push(new Particle());
-            function drawLines() {
-                for (let i=0;i<particles.length;i++) for (let j=i+1;j<particles.length;j++) {
-                    const dx = particles[i].x-particles[j].x, dy = particles[i].y-particles[j].y;
-                    const dist = Math.sqrt(dx*dx+dy*dy);
-                    if (dist<140) { const o=1-dist/140; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle=`rgba(${hexToRgb(particleColor)}, ${o*0.2})`; ctx.lineWidth=0.6; ctx.stroke(); }
+            window.addEventListener('resize', resize);
+            resize();
+
+            function hexToRgb(hex) {
+                const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return r ? `${parseInt(r[1],16)}, ${parseInt(r[2],16)}, ${parseInt(r[3],16)}` : '3, 250, 110';
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.4;
+                    this.speedY = (Math.random() - 0.5) * 0.4;
+                    this.opacity = Math.random() * 0.5 + 0.15;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > w) this.speedX *= -1;
+                    if (this.y < 0 || this.y > h) this.speedY *= -1;
+                }
+                draw(rgb) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${rgb}, ${this.opacity})`;
+                    ctx.fill();
                 }
             }
-            (function animate(){ ctx.clearRect(0,0,w,h); particles.forEach(p=>{p.update();p.draw();}); drawLines(); requestAnimationFrame(animate); })();
+
+            for (let i = 0; i < count; i++) particles.push(new Particle());
+
+            function animate() {
+                if (document.hidden) return;
+                const rgb = hexToRgb(particleColor);
+                ctx.clearRect(0, 0, w, h);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw(rgb);
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < linkDist) {
+                            const o = 1 - dist / linkDist;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(${rgb}, ${o * 0.2})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                animId = requestAnimationFrame(animate);
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && animId) {
+                    cancelAnimationFrame(animId);
+                    animId = null;
+                } else if (!document.hidden && !animId) {
+                    animate();
+                }
+            });
+
+            animate();
         })();
 
         /* ============ TEMA CON localStorage ============ */
@@ -958,12 +1133,12 @@
             const icon = document.querySelector('#themeToggle i');
             if (isLight) {
                 root.setAttribute('data-theme', 'light');
-                icon.classList.replace('fa-moon','fa-sun');
+                icon.classList.replace('fa-moon', 'fa-sun');
                 setParticleColor('#014b21');
                 updateCursorColors('#014b21');
             } else {
                 root.removeAttribute('data-theme');
-                icon.classList.replace('fa-sun','fa-moon');
+                icon.classList.replace('fa-sun', 'fa-moon');
                 setParticleColor('#03fa6e');
                 updateCursorColors('#03fa6e');
             }
@@ -977,7 +1152,8 @@
         if (savedTheme === 'light' || savedTheme === 'dark') {
             applyTheme(savedTheme === 'light');
         } else {
-            const h = new Date().getHours(); applyTheme(h >= 7 && h < 19);
+            const h = new Date().getHours();
+            applyTheme(h >= 7 && h < 19);
         }
         document.getElementById('themeToggle').addEventListener('click', () => {
             const isLight = !document.documentElement.hasAttribute('data-theme');
@@ -987,28 +1163,27 @@
 
         /* ============ CURSOR ============ */
         const dot = document.getElementById('cursorDot'), ring = document.getElementById('cursorRing');
-        let mouseX=0, mouseY=0, ringX=0, ringY=0;
+        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         document.addEventListener('mousemove', e => {
             if (isTouchDevice) return;
             mouseX = e.clientX; mouseY = e.clientY;
-            dot.style.left = mouseX+'px'; dot.style.top = mouseY+'px';
+            dot.style.left = mouseX + 'px'; dot.style.top = mouseY + 'px';
             dot.classList.add('show'); ring.classList.add('show');
         });
-        document.addEventListener('mouseleave', () => { if (!isTouchDevice) { dot.classList.remove('show'); ring.classList.remove('show'); } });
+        document.addEventListener('mouseleave', () => {
+            if (!isTouchDevice) { dot.classList.remove('show'); ring.classList.remove('show'); }
+        });
         function animateRing() {
-            if (!isTouchDevice) {
-                ringX += (mouseX-ringX)*0.12; ringY += (mouseY-ringY)*0.12;
-                ring.style.left = ringX+'px'; ring.style.top = ringY+'px';
+            if (!isTouchDevice && !document.hidden) {
+                ringX += (mouseX - ringX) * 0.12;
+                ringY += (mouseY - ringY) * 0.12;
+                ring.style.left = ringX + 'px';
+                ring.style.top = ringY + 'px';
             }
             requestAnimationFrame(animateRing);
         }
         animateRing();
-        if (isTouchDevice) {
-            document.addEventListener('touchstart', e => { const t=e.touches[0]; if(t){mouseX=t.clientX;mouseY=t.clientY;dot.style.left=mouseX+'px';dot.style.top=mouseY+'px';dot.classList.add('show');ring.classList.add('show');} }, {passive:true});
-            document.addEventListener('touchmove', e => { const t=e.touches[0]; if(t){mouseX=t.clientX;mouseY=t.clientY;dot.style.left=mouseX+'px';dot.style.top=mouseY+'px';ring.style.left=mouseX+'px';ring.style.top=mouseY+'px';} }, {passive:true});
-            document.addEventListener('touchend', () => setTimeout(()=>{dot.classList.remove('show');ring.classList.remove('show');},200), {passive:true});
-        }
 
         /* ============ SCROLL: progress, header, top ============ */
         const progressBar = document.getElementById('progress-bar');
@@ -1016,11 +1191,11 @@
         const scrollTopBtn = document.getElementById('scrollTop');
         window.addEventListener('scroll', () => {
             const s = window.scrollY, d = document.documentElement.scrollHeight - window.innerHeight;
-            progressBar.style.width = (s/d)*100 + '%';
+            progressBar.style.width = (s / d) * 100 + '%';
             header.classList.toggle('scrolled', s > 60);
             scrollTopBtn.classList.toggle('show', s > 400);
         });
-        scrollTopBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+        scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         /* ============ MENÚ ============ */
         const hamburger = document.getElementById('hamburger');
@@ -1038,7 +1213,12 @@
 
         /* ============ REVEAL ============ */
         const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
         }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
@@ -1049,12 +1229,12 @@
                 btn.classList.add('active');
                 const f = btn.dataset.filter;
                 document.querySelectorAll('.service-card').forEach(card => {
-                    if (f === 'all' || card.dataset.category === f) {
-                        card.style.display = 'flex';
-                        setTimeout(() => card.style.opacity = '1', 10);
-                    } else {
-                        card.style.opacity = '0';
-                        setTimeout(() => card.style.display = 'none', 300);
+                    const match = f === 'all' || card.dataset.category === f;
+                    card.classList.toggle('is-hidden', !match);
+                    if (match) {
+                        card.style.animation = 'none';
+                        void card.offsetWidth;
+                        card.style.animation = '';
                     }
                 });
             });
@@ -1062,10 +1242,13 @@
 
         /* ============ MODAL SERVICIO ============ */
         const modal = document.getElementById('serviceModal');
+        const modalCloseBtn = document.getElementById('modalClose');
         const modalIcon = document.getElementById('modalIcon');
         const modalTitle = document.getElementById('modalTitle');
         const modalDescription = document.getElementById('modalDescription');
         const modalFeatures = document.getElementById('modalFeatures');
+        let lastFocusedElement = null;
+
         const serviceData = {
             soporte: { icon: 'fa-headset', title: 'Soporte y Sistemas', description: 'Brindamos asistencia técnica especializada para mantener tus sistemas operando sin interrupciones.', features: ['Mantenimiento preventivo y correctivo','Formateo e instalación de S.O.','Gestión de licencias y software','Soporte remoto sin restricciones'] },
             seguridad: { icon: 'fa-shield-alt', title: 'Seguridad y Redes', description: 'Protegemos tu infraestructura tecnológica con soluciones de seguridad de vanguardia.', features: ['Redes VPN y seguridad informática','Instalación de CCTV y monitoreo','Configuración de routers y balanceo de carga','Optimización de red'] },
@@ -1075,22 +1258,90 @@
             consultoria: { icon: 'fa-rocket', title: 'Consultoría Tecnológica', description: 'Asesoría estratégica para optimizar tu infraestructura y adoptar las mejores soluciones.', features: ['Análisis de infraestructura','Recomendaciones personalizadas','Planificación de proyectos','Acompañamiento'] },
             invitaciones: { icon: 'fa-ticket-alt', title: 'Invitaciones Digitales', description: 'Invitaciones interactivas de alto impacto para todo tipo de eventos.', features: ['Diseño personalizado','RSVP en línea','Integración con Google Maps','Recordatorios automáticos','Galería de fotos','Adaptable a móviles'] }
         };
+
+        function openServiceModal(card) {
+            const d = serviceData[card.dataset.service];
+            if (!d) return;
+            lastFocusedElement = document.activeElement;
+            modalIcon.innerHTML = `<i class="fas ${d.icon}" aria-hidden="true"></i>`;
+            modalTitle.textContent = d.title;
+            modalDescription.textContent = d.description;
+            modalFeatures.innerHTML = d.features.map(f => `<li><i class="fas fa-check-circle" aria-hidden="true"></i> ${f}</li>`).join('');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            modalCloseBtn.focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            if (lastFocusedElement) lastFocusedElement.focus();
+        }
+
         document.querySelectorAll('.service-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const d = serviceData[card.dataset.service];
-                if (!d) return;
-                modalIcon.innerHTML = `<i class="fas ${d.icon}" aria-hidden="true"></i>`;
-                modalTitle.textContent = d.title;
-                modalDescription.textContent = d.description;
-                modalFeatures.innerHTML = d.features.map(f => `<li><i class="fas fa-check-circle" aria-hidden="true"></i> ${f}</li>`).join('');
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            card.addEventListener('click', () => openServiceModal(card));
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openServiceModal(card);
+                }
             });
         });
-        function closeModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; }
-        document.getElementById('modalClose').addEventListener('click', closeModal);
+
+        modalCloseBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+
+        /* ============ LIGHTBOX ============ */
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxCounter = document.getElementById('lightboxCounter');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        let lightboxIndex = 0;
+        let lightboxLastFocused = null;
+
+        function openLightbox(productId) {
+            const index = PRODUCTS.findIndex(p => p.id === productId);
+            if (index < 0) return;
+            lightboxIndex = index;
+            lightboxLastFocused = document.activeElement;
+            updateLightbox();
+            lightbox.classList.add('open');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            lightboxClose.focus();
+        }
+
+        function updateLightbox() {
+            const product = PRODUCTS[lightboxIndex];
+            if (!product) return;
+            lightboxImg.src = product.image;
+            lightboxImg.alt = product.name;
+            lightboxTitle.textContent = product.name;
+            lightboxCounter.textContent = `${lightboxIndex + 1} / ${PRODUCTS.length}`;
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
+            if (lightboxLastFocused) lightboxLastFocused.focus();
+        }
+
+        function navLightbox(delta) {
+            lightboxIndex = (lightboxIndex + delta + PRODUCTS.length) % PRODUCTS.length;
+            updateLightbox();
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', () => navLightbox(-1));
+        lightboxNext.addEventListener('click', () => navLightbox(1));
+        lightbox.addEventListener('click', e => {
+            if (e.target === lightbox) closeLightbox();
+        });
 
         /* ============ VALIDACIÓN FORMULARIO CONTACTO ============ */
         const contactForm = document.getElementById('contactForm');
@@ -1108,7 +1359,7 @@
             input.classList.toggle('invalid', !ok);
             return ok;
         }
-        ['fName','fEmail','fPhone','fMessage'].forEach(id => {
+        ['fName', 'fEmail', 'fPhone', 'fMessage'].forEach(id => {
             const el = document.getElementById(id);
             el.addEventListener('blur', () => validateField(el));
             el.addEventListener('input', () => { if (el.classList.contains('invalid')) validateField(el); });
@@ -1116,9 +1367,8 @@
 
         contactForm.addEventListener('submit', async e => {
             e.preventDefault();
-            const fields = ['fName','fEmail','fPhone','fMessage'].map(id => document.getElementById(id));
-            const allOk = fields.every(validateField);
-            if (!allOk) {
+            const fields = ['fName', 'fEmail', 'fPhone', 'fMessage'].map(id => document.getElementById(id));
+            if (!fields.every(validateField)) {
                 formStatus.className = 'form-status error';
                 formStatus.innerHTML = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Revisa los campos marcados.';
                 return;
@@ -1132,13 +1382,13 @@
             submitBtn.disabled = true; submitBtn.textContent = 'Enviando...';
             formStatus.className = 'form-status'; formStatus.style.display = 'none';
             try {
-                const res = await fetch(contactForm.action, { method:'POST', body: new FormData(contactForm), headers: { 'Accept':'application/json' } });
+                const res = await fetch(contactForm.action, { method: 'POST', body: new FormData(contactForm), headers: { 'Accept': 'application/json' } });
                 if (res.ok) {
                     formStatus.className = 'form-status success';
                     formStatus.innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i> ¡Gracias! Tu mensaje fue enviado.';
                     contactForm.reset();
                 } else {
-                    const data = await res.json().catch(()=>({}));
+                    const data = await res.json().catch(() => ({}));
                     throw new Error(data.error || 'Error al enviar');
                 }
             } catch (err) {
@@ -1150,17 +1400,18 @@
         });
 
         /* ============================================================
-           TIENDA: catálogo, carrito, totales, orden PDF
+           TIENDA: catálogo, planes, carrito, totales, orden PDF y WhatsApp
            ============================================================ */
         const PRODUCTS = [
-            { id: 'p1', name: 'Licencia Antivirus Premium', desc: '1 año · 3 dispositivos', price: 450, icon: 'fa-shield-virus', cat: 'Software' },
-            { id: 'p2', name: 'Soporte Remoto Mensual', desc: 'Atención ilimitada vía remota', price: 800, icon: 'fa-headset', cat: 'Soporte' },
-            { id: 'p3', name: 'Instalación CCTV (4 cámaras)', desc: 'Cámaras HD + configuración', price: 4500, icon: 'fa-video', cat: 'Seguridad' },
-            { id: 'p4', name: 'Sitio Web Básico', desc: '5 secciones + dominio 1 año', price: 6000, icon: 'fa-code', cat: 'Web' },
-            { id: 'p5', name: 'Invitación Digital Premium', desc: 'Diseño interactivo + RSVP', price: 1200, icon: 'fa-ticket-alt', cat: 'Eventos' },
-            { id: 'p6', name: 'Configuración VPN Empresarial', desc: 'Hasta 10 usuarios', price: 2000, icon: 'fa-network-wired', cat: 'Seguridad' },
-            { id: 'p7', name: 'Kit Domótica Básico', desc: 'Luces + control por voz', price: 3500, icon: 'fa-lightbulb', cat: 'Domótica' },
-            { id: 'p8', name: 'Hora de Consultoría TI', desc: 'Asesoría especializada', price: 600, icon: 'fa-rocket', cat: 'Soporte' }
+            { id: 'p1', name: 'Licencia Antivirus Premium', desc: '1 año · 3 dispositivos', price: 450, icon: 'fa-shield-virus', cat: 'Software', image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p2', name: 'Plan Soporte Esencial (Mensual)', desc: 'Hasta 5 dispositivos · Soporte remoto ilimitado', price: 800, icon: 'fa-headset', cat: 'Planes', image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=75&auto=format&fit=crop' },
+            { id: 'plan-empresarial', name: 'Plan Soporte Empresarial (Mensual)', desc: 'Hasta 20 dispositivos · Prioridad < 4 h + servidor', price: 2500, icon: 'fa-building-shield', cat: 'Planes', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p3', name: 'Instalación CCTV (4 cámaras)', desc: 'Cámaras HD + configuración', price: 4500, icon: 'fa-video', cat: 'Seguridad', image: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p4', name: 'Sitio Web Básico', desc: '5 secciones + dominio 1 año', price: 6000, icon: 'fa-code', cat: 'Web', image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p5', name: 'Invitación Digital Premium', desc: 'Diseño interactivo + RSVP', price: 1200, icon: 'fa-ticket-alt', cat: 'Eventos', image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p6', name: 'Configuración VPN Empresarial', desc: 'Hasta 10 usuarios', price: 2000, icon: 'fa-network-wired', cat: 'Seguridad', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p7', name: 'Kit Domótica Básico', desc: 'Luces + control por voz', price: 3500, icon: 'fa-lightbulb', cat: 'Domótica', image: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=800&q=75&auto=format&fit=crop' },
+            { id: 'p8', name: 'Hora de Consultoría TI', desc: 'Asesoría especializada', price: 600, icon: 'fa-rocket', cat: 'Soporte', image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=75&auto=format&fit=crop' }
         ];
 
         const storeGrid = document.getElementById('storeGrid');
@@ -1174,6 +1425,8 @@
         const cartIvaEl = document.getElementById('cartIva');
         const cartTotalEl = document.getElementById('cartTotal');
         const checkoutBtn = document.getElementById('checkoutBtn');
+        const whatsappOrderBtn = document.getElementById('whatsappOrderBtn');
+        const clearCartBtn = document.getElementById('clearCartBtn');
         const cartError = document.getElementById('cartError');
         const cName = document.getElementById('cName');
         const cEmail = document.getElementById('cEmail');
@@ -1182,6 +1435,7 @@
 
         const IVA_RATE = 0.16;
         let cart = JSON.parse(localStorage.getItem('mzg-cart') || '[]');
+        let lastGeneratedOrder = null;
 
         function saveCart() { localStorage.setItem('mzg-cart', JSON.stringify(cart)); }
         function formatMoney(n) { return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
@@ -1189,49 +1443,104 @@
         function renderStore() {
             storeGrid.innerHTML = PRODUCTS.map(p => `
                 <article class="product-card reveal">
-                    <div class="product-icon"><i class="fas ${p.icon}" aria-hidden="true"></i></div>
-                    <span class="product-cat">${p.cat}</span>
-                    <h3>${p.name}</h3>
-                    <p>${p.desc}</p>
-                    <div class="product-footer">
-                        <div class="product-price">${formatMoney(p.price)}<small>+ IVA</small></div>
-                        <button class="btn-add" data-id="${p.id}" aria-label="Agregar ${p.name} al carrito">
-                            <i class="fas fa-plus" aria-hidden="true"></i>
-                        </button>
+                    <div class="product-image" data-icon="${p.icon}" data-product-id="${p.id}" role="button" tabindex="0" aria-label="Ampliar imagen de ${p.name}">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async">
+                        <span class="zoom-hint" aria-hidden="true"><i class="fas fa-expand"></i></span>
+                    </div>
+                    <div class="product-body">
+                        <span class="product-cat">${p.cat}</span>
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p>
+                        <div class="product-footer">
+                            <div class="product-price">${formatMoney(p.price)}<small>+ IVA</small></div>
+                            <button type="button" class="btn-add" data-id="${p.id}" aria-label="Agregar ${p.name} al carrito">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
                 </article>
             `).join('');
+
+            // Handler de agregar al carrito
             storeGrid.querySelectorAll('.btn-add').forEach(btn => {
-                btn.addEventListener('click', () => addToCart(btn.dataset.id));
+                btn.addEventListener('click', () => addToCart(btn.dataset.id, true));
             });
-            // Reobservar reveals nuevos
+
+            // Handler de abrir lightbox (clic o teclado)
+            storeGrid.querySelectorAll('.product-image').forEach(wrapper => {
+                wrapper.addEventListener('click', () => openLightbox(wrapper.dataset.productId));
+                wrapper.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openLightbox(wrapper.dataset.productId);
+                    }
+                });
+            });
+
+            // Fallback si la imagen falla (muestra el icono del producto)
+            storeGrid.querySelectorAll('.product-image img').forEach(img => {
+                img.addEventListener('error', () => {
+                    const wrapper = img.parentElement;
+                    const icon = wrapper.dataset.icon || 'fa-image';
+                    img.remove();
+                    wrapper.classList.add('img-fallback');
+                    const i = document.createElement('i');
+                    i.className = `fas ${icon}`;
+                    i.setAttribute('aria-hidden', 'true');
+                    wrapper.insertBefore(i, wrapper.firstChild);
+                });
+            });
+
             storeGrid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        function addToCart(id) {
+        function addToCart(id, notify = true) {
             const p = PRODUCTS.find(x => x.id === id);
             if (!p) return;
             const found = cart.find(i => i.id === id);
             if (found) found.qty += 1;
             else cart.push({ ...p, qty: 1 });
-            saveCart(); updateCartUI();
-            // Pequeña animación de feedback
-            cartBtn.style.transform = 'scale(1.2)';
+            lastGeneratedOrder = null;
+            saveCart();
+            updateCartUI();
+            cartBtn.style.transform = 'scale(1.25)';
             setTimeout(() => cartBtn.style.transform = '', 250);
+            if (notify) {
+                showToast(`Agregado: ${p.name}`, 'Ver carrito', openCart);
+            }
         }
+
+        /* Conectar botones de planes directamente al carrito */
+        document.querySelectorAll('.add-plan-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                addToCart(btn.dataset.planId, false);
+                openCart();
+            });
+        });
 
         function updateQty(id, delta) {
             const item = cart.find(i => i.id === id);
             if (!item) return;
             item.qty += delta;
             if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-            saveCart(); updateCartUI();
+            lastGeneratedOrder = null;
+            saveCart();
+            updateCartUI();
         }
 
         function removeItem(id) {
             cart = cart.filter(i => i.id !== id);
-            saveCart(); updateCartUI();
+            lastGeneratedOrder = null;
+            saveCart();
+            updateCartUI();
         }
+
+        clearCartBtn.addEventListener('click', () => {
+            cart = [];
+            lastGeneratedOrder = null;
+            saveCart();
+            updateCartUI();
+        });
 
         function updateCartUI() {
             const count = cart.reduce((s, i) => s + i.qty, 0);
@@ -1239,10 +1548,18 @@
             const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
             const iva = subtotal * IVA_RATE;
             const total = subtotal + iva;
+
             cartSubtotalEl.textContent = formatMoney(subtotal);
             cartIvaEl.textContent = formatMoney(iva);
             cartTotalEl.textContent = formatMoney(total);
             checkoutBtn.disabled = cart.length === 0;
+            clearCartBtn.classList.toggle('show', cart.length > 0);
+
+            if (lastGeneratedOrder && cart.length > 0) {
+                whatsappOrderBtn.classList.add('show');
+            } else {
+                whatsappOrderBtn.classList.remove('show');
+            }
 
             if (cart.length === 0) {
                 cartItemsEl.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-basket" aria-hidden="true"></i>Tu carrito está vacío.<br>Agrega productos desde la tienda.</div>`;
@@ -1250,22 +1567,38 @@
             }
             cartItemsEl.innerHTML = cart.map(i => `
                 <div class="cart-item">
-                    <div class="cart-item-icon"><i class="fas ${i.icon}" aria-hidden="true"></i></div>
+                    <div class="cart-item-img" data-icon="${i.icon}">
+                        <img src="${i.image}" alt="${i.name}" loading="lazy">
+                    </div>
                     <div class="cart-item-info">
                         <h4>${i.name}</h4>
                         <span>${formatMoney(i.price)} c/u</span>
                     </div>
                     <div class="cart-qty">
-                        <button data-act="dec" data-id="${i.id}" aria-label="Quitar uno">−</button>
+                        <button type="button" data-act="dec" data-id="${i.id}" aria-label="Quitar uno">−</button>
                         <span>${i.qty}</span>
-                        <button data-act="inc" data-id="${i.id}" aria-label="Agregar uno">+</button>
+                        <button type="button" data-act="inc" data-id="${i.id}" aria-label="Agregar uno">+</button>
                     </div>
                     <span class="cart-item-total">${formatMoney(i.price * i.qty)}</span>
-                    <button class="cart-remove" data-act="rm" data-id="${i.id}" aria-label="Eliminar">
+                    <button type="button" class="cart-remove" data-act="rm" data-id="${i.id}" aria-label="Eliminar">
                         <i class="fas fa-trash" aria-hidden="true"></i>
                     </button>
                 </div>
             `).join('');
+
+            // Fallback de miniaturas en el carrito
+            cartItemsEl.querySelectorAll('.cart-item-img img').forEach(img => {
+                img.addEventListener('error', () => {
+                    const wrapper = img.parentElement;
+                    const icon = wrapper.dataset.icon || 'fa-image';
+                    img.remove();
+                    const iconEl = document.createElement('i');
+                    iconEl.className = `fas ${icon}`;
+                    iconEl.setAttribute('aria-hidden', 'true');
+                    wrapper.appendChild(iconEl);
+                });
+            });
+
             cartItemsEl.querySelectorAll('button[data-act]').forEach(b => {
                 b.addEventListener('click', () => {
                     const act = b.dataset.act, id = b.dataset.id;
@@ -1276,15 +1609,39 @@
             });
         }
 
-        function openCart() { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
-        function closeCart() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); document.body.style.overflow = 'auto'; }
+        function openCart() {
+            lastFocusedElement = document.activeElement;
+            cartDrawer.classList.add('open');
+            cartOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            cartClose.focus();
+        }
+        function closeCart() {
+            cartDrawer.classList.remove('open');
+            cartOverlay.classList.remove('open');
+            document.body.style.overflow = 'auto';
+            if (lastFocusedElement) lastFocusedElement.focus();
+        }
 
         cartBtn.addEventListener('click', openCart);
         cartClose.addEventListener('click', closeCart);
         cartOverlay.addEventListener('click', closeCart);
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && cartDrawer.classList.contains('open')) closeCart(); });
 
-        /* ============ GENERAR ORDEN PDF ============ */
+        /* ============ UNIFICAR ESCAPE: modal, carrito, lightbox ============ */
+        document.addEventListener('keydown', e => {
+            if (lightbox.classList.contains('open')) {
+                if (e.key === 'Escape') closeLightbox();
+                else if (e.key === 'ArrowLeft') navLightbox(-1);
+                else if (e.key === 'ArrowRight') navLightbox(1);
+                return;
+            }
+            if (e.key === 'Escape') {
+                if (modal.classList.contains('active')) closeModal();
+                if (cartDrawer.classList.contains('open')) closeCart();
+            }
+        });
+
+        /* ============ GENERAR ORDEN PDF + ENLACE WHATSAPP ============ */
         function showCartError(msg) {
             cartError.textContent = msg;
             cartError.classList.add('show');
@@ -1302,7 +1659,7 @@
                 showCartError('El generador PDF aún carga. Intenta en un segundo.');
                 return;
             }
-            generatePDF({ name, email, phone: cPhone.value.trim(), rfc: cRfc.value.trim() });
+            generatePDF({ name, email, phone: cPhone.value.trim(), rfc: cRfc.value.trim().toUpperCase() });
         });
 
         function generatePDF(customer) {
@@ -1310,9 +1667,9 @@
             const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
             const now = new Date();
-            const orderNum = 'MZG-' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + Math.floor(Math.random()*9000+1000);
-            const dateStr = now.toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
-            const timeStr = now.toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+            const orderNum = 'MZG-' + now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + Math.floor(Math.random() * 9000 + 1000);
+            const dateStr = now.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+            const timeStr = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
             const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
             const iva = subtotal * IVA_RATE;
@@ -1328,7 +1685,7 @@
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             doc.text('Soluciones Tecnológicas · CDMX', 14, 23);
-            doc.text('info@mzgsystems.com · +52 55 1234 5678', 14, 28);
+            doc.text(`${SITE_EMAIL} · +52 55 1234 5678`, 14, 28);
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(14);
@@ -1349,18 +1706,25 @@
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
-            doc.text('Nombre: ' + customer.name, 14, 56);
-            doc.text('Correo: ' + customer.email, 14, 62);
-            if (customer.phone) doc.text('Teléfono: ' + customer.phone, 14, 68);
-            if (customer.rfc) doc.text('RFC: ' + customer.rfc, 14, customer.phone ? 74 : 68);
+            let infoY = 56;
+            doc.text('Nombre: ' + customer.name, 14, infoY);
+            infoY += 6;
+            doc.text('Correo: ' + customer.email, 14, infoY);
+            if (customer.phone) {
+                infoY += 6;
+                doc.text('Teléfono: ' + customer.phone, 14, infoY);
+            }
+            if (customer.rfc) {
+                infoY += 6;
+                doc.text('RFC: ' + customer.rfc, 14, infoY);
+            }
 
-            // Fecha y hora a la derecha
             doc.text('Fecha: ' + dateStr, 196, 56, { align: 'right' });
             doc.text('Hora: ' + timeStr, 196, 62, { align: 'right' });
             doc.text('Moneda: MXN', 196, 68, { align: 'right' });
 
             // Tabla de productos
-            const startY = customer.phone || customer.rfc ? 84 : (customer.phone || customer.rfc ? 84 : 78);
+            const startY = Math.max(infoY + 10, 78);
             const rows = cart.map(i => [
                 i.name,
                 i.qty.toString(),
@@ -1386,7 +1750,6 @@
 
             let finalY = doc.lastAutoTable.finalY + 10;
 
-            // Totales
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             doc.text('Subtotal:', 140, finalY);
@@ -1394,7 +1757,6 @@
             doc.text('IVA (16%):', 140, finalY + 7);
             doc.text(formatMoney(iva), 196, finalY + 7, { align: 'right' });
 
-            // Caja del total
             doc.setFillColor(3, 250, 110);
             doc.rect(130, finalY + 12, 66, 12, 'F');
             doc.setTextColor(1, 26, 12);
@@ -1403,7 +1765,6 @@
             doc.text('TOTAL:', 134, finalY + 19.5);
             doc.text(formatMoney(total), 194, finalY + 19.5, { align: 'right' });
 
-            // Resumen textual de la compra
             finalY += 36;
             doc.setTextColor(0, 0, 0);
             doc.setFont('helvetica', 'bold');
@@ -1416,12 +1777,10 @@
             doc.setFontSize(9.5);
             let y = finalY + 10;
             cart.forEach(i => {
-                const line = `• ${i.qty} × ${i.name} — ${formatMoney(i.price * i.qty)}`;
-                doc.text(line, 16, y);
+                doc.text(`• ${i.qty} × ${i.name} — ${formatMoney(i.price * i.qty)}`, 16, y);
                 y += 6;
             });
 
-            // Notas finales
             y += 4;
             doc.setFontSize(9);
             doc.setTextColor(90, 90, 90);
@@ -1433,16 +1792,35 @@
             ];
             notes.forEach(n => { doc.text(n, 14, y); y += 5; });
 
-            // Línea final y pie
             y += 4;
             doc.setDrawColor(220, 220, 220);
             doc.line(14, y, 196, y);
             doc.setFontSize(8);
             doc.setTextColor(120, 120, 120);
             doc.text('MZG Systems · Soluciones Tecnológicas · CDMX y Área Metropolitana', 105, y + 6, { align: 'center' });
-            doc.text('mzgsystems.com · info@mzgsystems.com', 105, y + 11, { align: 'center' });
+            doc.text(`${SITE_DOMAIN} · ${SITE_EMAIL}`, 105, y + 11, { align: 'center' });
 
             doc.save('Orden-' + orderNum + '.pdf');
+
+            // Preparar enlace directo a WhatsApp con el resumen de la orden
+            const itemsList = cart.map(i => `• ${i.qty}x ${i.name} (${formatMoney(i.price * i.qty)})`).join('\n');
+            const waText = [
+                `Hola MZG Systems, generé la orden *#${orderNum}*:`,
+                ``,
+                `*Cliente:* ${customer.name}`,
+                `*Correo:* ${customer.email}`,
+                customer.rfc ? `*RFC:* ${customer.rfc}` : null,
+                ``,
+                `*Detalle:*`,
+                itemsList,
+                ``,
+                `*Total (IVA incl.):* ${formatMoney(total)} MXN`
+            ].filter(Boolean).join('\n');
+
+            whatsappOrderBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+            lastGeneratedOrder = orderNum;
+            updateCartUI();
+            showToast(`Orden #${orderNum} descargada`);
         }
 
         /* ============ INIT ============ */
