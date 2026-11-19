@@ -1144,8 +1144,9 @@ function badgeEstado(estado) {
     };
     return `<span class="badge ${m[estado] || 'badge-pending'}">${escapeHtml(estado || '—')}</span>`;
 }
+
+// IMPORTANTE: Esta función es async y usa POST para evitar el error de CORS
 async function apiGet(accion, extra = {}) {
-    // Usamos POST en lugar de GET para evitar el bloqueo de CORS de Google
     const res = await fetch(API_URL, {
         method: 'POST',
         body: JSON.stringify({ ...extra, apiKey: API_KEY, accion: accion }),
@@ -1161,16 +1162,7 @@ async function apiGet(accion, extra = {}) {
         throw new Error("Error de redirección de Google");
     }
 }
-    
-    // Si la respuesta no es JSON (ej. una página de login de Google), lanzamos un error
-    const text = await res.text();
-    try {
-        return JSON.parse(text);
-    } catch (e) {
-        console.error("Respuesta recibida (no es JSON):", text);
-        throw new Error("Error de CORS o autenticación en Google");
-    }
-}
+
 async function apiPost(payload) {
     const res = await fetch(API_URL, {
         method: 'POST',
@@ -1851,10 +1843,18 @@ function abrirMensaje(tipo, id) {
 }
 
 async function marcarAtendida(id) {
-    // Reutilizamos la acción marcar_contacto_leido adaptada... pero para cotizaciones no existe en backend.
-    // Solución: extender backend sería ideal, pero por ahora actualizamos vía nueva acción si existiera.
-    // Como el Code.gs actual no tiene "marcar_cotizacion_atendida", lo dejamos indicado en las notas finales.
-    showToast('Función pendiente: ver notas para habilitar', 'error');
+    try {
+        const r = await apiPost({ accion: 'marcar_cotizacion_atendida', id });
+        if (r.ok) {
+            showToast('Cotización atendida');
+            document.getElementById('modalMensaje').classList.remove('open');
+            await loadAll();
+        } else {
+            showToast('Error: ' + (r.error || 'desconocido'), 'error');
+        }
+    } catch {
+        showToast('Error de red', 'error');
+    }
 }
 
 async function marcarLeido(id) {
