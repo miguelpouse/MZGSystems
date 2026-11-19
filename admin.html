@@ -1094,7 +1094,7 @@
 /* ============================================================
    CONFIG
    ============================================================ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbx0MPPbilbFOCoMfB9qMCBCxBFZ_jknsxszsP0UUgIcvNUcVFf7g2iOnlwuhS3u4etR/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxbYBqYx1uTF2TfzC34zwgqsk-s76UHvQ0dVhirC8qQGWxY1IQnq1eVjb_c5WPpy8if/exec';
 const LS_KEY = 'mzg-admin-api-key';
 
 let API_KEY = localStorage.getItem(LS_KEY) || '';
@@ -1146,22 +1146,6 @@ function badgeEstado(estado) {
 }
 
 // IMPORTANTE: Esta función es async y usa POST para evitar el error de CORS
-async function apiGet(accion, extra = {}) {
-    const res = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ ...extra, apiKey: API_KEY, accion: accion }),
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        redirect: 'follow'
-    });
-    
-    const text = await res.text();
-    try {
-        return JSON.parse(text);
-    } catch (e) {
-        console.error("Respuesta recibida (no es JSON):", text);
-        throw new Error("Error de redirección de Google");
-    }
-}
 
 async function apiPost(payload) {
     const res = await fetch(API_URL, {
@@ -1172,7 +1156,23 @@ async function apiPost(payload) {
     });
     return res.json();
 }
-
+async function apiGet(accion, extra = {}) {
+    const params = new URLSearchParams({ accion, apiKey: API_KEY, ...extra });
+    const url = `${API_URL}?${params.toString()}`;
+    
+    const res = await fetch(url, {
+        method: 'GET',
+        redirect: 'follow'
+    });
+    
+    const text = await res.text();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        console.error("Respuesta recibida (no es JSON):", text);
+        throw new Error("Error de conexión con Google. Revisa la URL.");
+    }
+}
 function showToast(msg, tipo = 'success') {
     const el = document.createElement('div');
     el.className = 'toast ' + tipo;
