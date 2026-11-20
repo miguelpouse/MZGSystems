@@ -107,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- VISTA DASHBOARD -->
             <section id="view-dashboard">
                 <div class="kpi-grid" id="kpiGrid"></div>
                 <div style="background:var(--bg-panel); border-radius:var(--radius); padding:20px; border:1px solid var(--border);">
@@ -116,7 +115,6 @@
                 </div>
             </section>
 
-            <!-- VISTA PEDIDOS -->
             <section id="view-pedidos" class="hidden">
                 <div style="display:flex; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
                     <input type="search" id="searchPedidos" class="form-control" placeholder="Buscar cliente o ID..." style="max-width:300px;">
@@ -128,7 +126,6 @@
                 <div class="pagination" id="paginationContainer"></div>
             </section>
 
-            <!-- VISTA PRODUCTOS -->
             <section id="view-productos" class="hidden">
                 <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
                     <button class="btn-main" style="width:auto;" onclick="openModalProducto()"><i class="fas fa-plus"></i> Nuevo Producto</button>
@@ -138,7 +135,6 @@
                 </div>
             </section>
 
-            <!-- VISTA CONTACTOS/COTIZACIONES -->
             <section id="view-contactos" class="hidden">
                 <div class="table-wrap">
                     <table><thead><tr><th>Tipo</th><th>Nombre</th><th>Email</th><th>Mensaje</th><th>Estado</th></tr></thead><tbody id="bandejaTbody"></tbody></table>
@@ -147,7 +143,7 @@
         </main>
     </div>
 
-    <!-- MODAL PEDIDO (Con Historial) -->
+    <!-- MODAL PEDIDO -->
     <div class="modal" id="modalPedido">
         <div class="modal-card">
             <button style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; color:var(--text-main); cursor:pointer;" onclick="document.getElementById('modalPedido').classList.remove('open')">&times;</button>
@@ -156,7 +152,7 @@
         </div>
     </div>
 
-    <!-- MODAL PRODUCTO (Con Imagen Drive) -->
+    <!-- MODAL PRODUCTO -->
     <div class="modal" id="modalProducto">
         <div class="modal-card">
             <button style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; color:var(--text-main); cursor:pointer;" onclick="document.getElementById('modalProducto').classList.remove('open')">&times;</button>
@@ -176,7 +172,7 @@
                 <div class="form-group">
                     <label>Imagen del Producto</label>
                     <input type="file" id="prodImagenFile" accept="image/*" class="form-control" style="margin-bottom:5px;">
-                    <small style="color:var(--text-sec)">O sube una imagen desde tu dispositivo. Se guardará en Drive.</small>
+                    <small style="color:var(--text-sec)">Sube una imagen desde tu dispositivo.</small>
                     <input type="hidden" id="prodImagenUrl">
                     <img id="prodImagenPreview" style="width:100%; height:150px; object-fit:cover; border-radius:10px; margin-top:10px; display:none;">
                 </div>
@@ -206,17 +202,28 @@
             return res.json();
         }
 
-        // LOGIN
+        // LOGIN CORREGIDO
         document.getElementById('loginBtn').onclick = async () => {
-            const key = document.getElementById('loginInput').value;
+            const key = document.getElementById('loginInput').value.trim(); // .trim() limpia espacios
             const err = document.getElementById('loginError');
             if (!key) return;
             API_KEY = key;
+            err.textContent = 'Verificando...';
             try {
                 const r = await apiPost({ accion: 'estadisticas' });
-                if (r.ok) { localStorage.setItem(LS_KEY, key); document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); loadAll(); }
-                else { err.textContent = 'API Key inválida'; API_KEY = ''; }
-            } catch { err.textContent = 'Error de red'; API_KEY = ''; }
+                if (r.ok) { 
+                    localStorage.setItem(LS_KEY, key); 
+                    document.getElementById('loginScreen').classList.add('hidden'); 
+                    document.getElementById('app').classList.remove('hidden'); 
+                    loadAll(); 
+                } else { 
+                    err.textContent = 'Error: ' + (r.error || 'API Key inválida'); 
+                    API_KEY = ''; 
+                }
+            } catch { 
+                err.textContent = 'Error de conexión (Revisa la URL)'; 
+                API_KEY = ''; 
+            }
         };
         document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem(LS_KEY); location.reload(); };
 
@@ -240,7 +247,6 @@
                 state.cotizaciones = data.cotizaciones || [];
                 state.contactos = data.contactos || [];
                 
-                // KPIs
                 const s = await apiPost({ accion: 'estadisticas' });
                 if (s.ok) {
                     const st = s.stats;
@@ -250,11 +256,7 @@
                         <div class="kpi-card"><div class="kpi-label">Ticket Promedio</div><div class="kpi-val">$${st.ticket_promedio.toLocaleString()}</div></div>
                     `;
                 }
-
-                renderPedidos();
-                renderProductos();
-                renderBandeja();
-                actualizarBadges();
+                renderPedidos(); renderProductos(); renderBandeja(); actualizarBadges();
             }
         }
 
@@ -265,7 +267,6 @@
             document.getElementById('badgeContactos').textContent = c; document.getElementById('badgeContactos').classList.toggle('hidden', c===0);
         }
 
-        // RENDER PEDIDOS + PAGINACIÓN
         function renderPedidos() {
             const tbody = document.getElementById('pedidosTbody');
             const start = (currentPage - 1) * itemsPerPage, end = start + itemsPerPage;
@@ -285,7 +286,6 @@
             `).join('');
         }
 
-        // MODAL PEDIDO (CON HISTORIAL)
         window.openModalPedido = (id) => {
             const p = state.pedidos.find(x => x.id_pedido === id);
             document.getElementById('mPedidoId').textContent = p.id_pedido;
@@ -315,7 +315,6 @@
             loadAll(); alert('Estado actualizado');
         };
 
-        // EXPORTAR A CSV
         window.exportToCSV = () => {
             let csv = "ID,Fecha,Cliente,Email,Total,Estado\n";
             state.pedidos.forEach(p => { csv += `${p.id_pedido},${p.fecha},${p.cliente_nombre},${p.cliente_email},${p.total},${p.estado}\n`; });
@@ -323,10 +322,9 @@
             const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'pedidos_mzg.csv'; link.click();
         };
 
-        // RENDER PRODUCTOS
         function renderProductos() {
             document.getElementById('productosTbody').innerHTML = state.productos.map(p => `<tr>
-                <td><img src="${p.imagen_url}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;"></td>
+                <td><img src="${p.imagen_url || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;"></td>
                 <td>${p.nombre}</td>
                 <td>$${p.precio}</td>
                 <td>${p.activo ? 'Visible' : 'Oculto'}</td>
@@ -357,7 +355,6 @@
             document.getElementById('modalProducto').classList.add('open');
         };
 
-        // SUBIDA DE IMAGEN
         document.getElementById('prodImagenFile').onchange = (e) => {
             const file = e.target.files[0]; if (!file) return;
             const reader = new FileReader();
@@ -370,7 +367,7 @@
                     canvas.width = width; canvas.height = height;
                     canvas.getContext('2d').drawImage(img, 0, 0, width, height);
                     const base64 = canvas.toDataURL('image/jpeg', 0.8);
-                    document.getElementById('prodImagenUrl').value = base64; // temporalmente base64
+                    document.getElementById('prodImagenUrl').value = base64;
                     document.getElementById('prodImagenPreview').src = base64; document.getElementById('prodImagenPreview').style.display = 'block';
                 };
             };
@@ -382,7 +379,6 @@
             const btn = document.getElementById('btnSaveProd'); btn.textContent = 'Guardando...'; btn.disabled = true;
             let imgUrl = document.getElementById('prodImagenUrl').value;
             
-            // Si es Base64 (imagen nueva), subir a Drive
             if (imgUrl.startsWith('data:image')) {
                 const up = await apiPost({ accion: 'subir_imagen', base64: imgUrl });
                 if (up.ok) imgUrl = up.url;
@@ -402,10 +398,9 @@
             
             const res = await apiPost(payload);
             btn.textContent = 'Guardar'; btn.disabled = false;
-            if (res.ok) { document.getElementById('modalProducto').classList.remove('open'); loadAll(); }
+            if (res.ok) { document.getElementById('modalProducto').classList.remove('open'); loadAll(); } else { alert('Error: ' + res.error); }
         };
 
-        // RENDER BANDEJA (Contactos + Cotizaciones)
         function renderBandeja() {
             const all = [
                 ...state.contactos.map(c => ({ tipo: 'Contacto', ...c })),
