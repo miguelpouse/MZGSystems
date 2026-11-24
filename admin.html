@@ -2,10 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>MZG Admin · Dashboard</title>
+    <title>MZG Admin · Dashboard Pro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- CHART.JS PARA GRÁFICAS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -27,30 +30,36 @@
         #loginScreen { position: fixed; inset: 0; z-index: 1000; background: var(--bg-main); display: flex; align-items: center; justify-content: center; }
         .login-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 24px; padding: 50px; max-width: 420px; width: 100%; text-align: center; box-shadow: var(--shadow); }
         .login-card input { width: 100%; padding: 14px; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-main); color: var(--text-main); text-align: center; font-size: 1.1rem; }
-        .btn-main { background: var(--primary); color: #011a0c; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-main { background: var(--primary); color: #011a0c; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-main:hover { background: var(--primary-light); transform: translateY(-2px); }
         
         /* Layout */
-        #app { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
-        #sidebar { background: var(--bg-panel); border-right: 1px solid var(--border); padding: 20px; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 5px; }
+        #app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+        #sidebar { background: var(--bg-panel); border-right: 1px solid var(--border); padding: 20px; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 5px; z-index: 10; }
         .nav-btn { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; border: none; background: transparent; color: var(--text-sec); cursor: pointer; text-align: left; font-size: 0.95rem; font-weight: 500; transition: 0.3s; }
         .nav-btn:hover, .nav-btn.active { background: rgba(3, 250, 110, 0.1); color: var(--primary); }
         .badge-count { background: var(--danger); color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; margin-left: auto; }
         
-        #main { padding: 30px; }
+        #main { padding: 30px; overflow-x: hidden; }
         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .top-actions { display: flex; gap: 15px; align-items: center; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: 0.3s; display: flex; gap: 8px; align-items: center; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: 0.3s; display: flex; gap: 8px; align-items: center; font-size: 0.9rem; }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
         
-        /* KPIs con Monospace */
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        /* KPIs */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .kpi-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); }
         .kpi-label { font-size: 0.8rem; color: var(--text-sec); text-transform: uppercase; letter-spacing: 1px; }
         .kpi-val { font-family: ui-monospace, 'Courier New', monospace; font-size: 2rem; font-weight: 700; margin-top: 8px; color: var(--primary); }
         
+        /* Charts Area */
+        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .chart-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .chart-card h3 { margin-bottom: 15px; font-size: 1.1rem; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+
         /* Tablas y Paginación */
-        .table-wrap { background: var(--bg-panel); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+        .table-wrap { background: var(--bg-panel); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow); }
         table { width: 100%; border-collapse: collapse; }
         th { background: var(--bg-card); padding: 15px; text-align: left; font-size: 0.8rem; color: var(--text-sec); text-transform: uppercase; border-bottom: 1px solid var(--border); }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -70,6 +79,9 @@
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
         .bg-pending { background: rgba(255,176,32,0.15); color: var(--warning); } .bg-completed { background: rgba(3,250,110,0.15); color: var(--primary); } .bg-danger { background: rgba(255,77,77,0.15); color: var(--danger); }
 
+        @media (max-width: 1024px) {
+            .charts-grid { grid-template-columns: 1fr; }
+        }
         @media (max-width: 900px) {
             #app { grid-template-columns: 1fr; }
             #sidebar { position: fixed; bottom: 0; top: auto; height: auto; width: 100%; flex-direction: row; justify-content: space-around; border-right: none; border-top: 1px solid var(--border); z-index: 500; padding: 10px; }
@@ -81,7 +93,7 @@
 <body>
     <div id="loginScreen">
         <div class="login-card">
-            <h2>MZG Admin</h2>
+            <h2>MZG Admin Pro</h2>
             <input type="password" id="loginInput" placeholder="API Key Maestra">
             <button class="btn-main" id="loginBtn">Entrar</button>
             <p id="loginError" style="color:var(--danger); font-size:0.85rem; margin-top:10px;"></p>
@@ -90,9 +102,10 @@
 
     <div id="app" class="hidden">
         <aside id="sidebar">
-            <h3 style="color:var(--primary); margin-bottom:20px; text-align:center;">&lt;/&gt; MZG</h3>
+            <h3 style="color:var(--primary); margin-bottom:20px; text-align:center;">&lt;/&gt; MZG Pro</h3>
             <button class="nav-btn active" data-view="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>
             <button class="nav-btn" data-view="pedidos"><i class="fas fa-box"></i> Pedidos <span class="badge-count hidden" id="badgePedidos">0</span></button>
+            <button class="nav-btn" data-view="clientes"><i class="fas fa-users"></i> Clientes CRM</button>
             <button class="nav-btn" data-view="productos"><i class="fas fa-tags"></i> Productos</button>
             <button class="nav-btn" data-view="contactos"><i class="fas fa-envelope"></i> Bandeja <span class="badge-count hidden" id="badgeContactos">0</span></button>
             <div style="margin-top: auto;"><button class="nav-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
@@ -107,25 +120,56 @@
                 </div>
             </div>
 
+            <!-- VISTA DASHBOARD (CON GRÁFICAS) -->
             <section id="view-dashboard">
                 <div class="kpi-grid" id="kpiGrid"></div>
-                <div style="background:var(--bg-panel); border-radius:var(--radius); padding:20px; border:1px solid var(--border);">
+                
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-line" style="color:var(--primary)"></i> Ingresos (Últimos 7 días)</h3>
+                        <div class="chart-container"><canvas id="salesChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-pie" style="color:var(--primary)"></i> Estatus de Pedidos</h3>
+                        <div class="chart-container"><canvas id="statusChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div style="background:var(--bg-panel); border-radius:var(--radius); padding:20px; border:1px solid var(--border); box-shadow:var(--shadow);">
                     <h3>Últimos Pedidos</h3>
                     <div id="ultimosPedidos" style="margin-top:15px;"></div>
                 </div>
             </section>
 
+            <!-- VISTA PEDIDOS (CON FILTRO DE FECHA) -->
             <section id="view-pedidos" class="hidden">
                 <div style="display:flex; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
-                    <input type="search" id="searchPedidos" class="form-control" placeholder="Buscar cliente o ID..." style="max-width:300px;">
+                    <input type="search" id="searchPedidos" class="form-control" placeholder="Buscar cliente o ID..." style="max-width:250px;">
+                    <select id="filterDate" class="form-control" style="max-width:200px;" onchange="renderPedidos()">
+                        <option value="all">Todo el tiempo</option>
+                        <option value="today">Hoy</option>
+                        <option value="week">Últimos 7 días</option>
+                        <option value="month">Este mes</option>
+                    </select>
                     <button class="btn-outline" onclick="exportToCSV()"><i class="fas fa-file-csv"></i> Exportar CSV</button>
                 </div>
                 <div class="table-wrap">
-                    <table><thead><tr><th>ID</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="pedidosTbody"></tbody></table>
+                    <table><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="pedidosTbody"></tbody></table>
                 </div>
                 <div class="pagination" id="paginationContainer"></div>
             </section>
 
+            <!-- VISTA CLIENTES CRM -->
+            <section id="view-clientes" class="hidden">
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Cliente</th><th>Email</th><th>Órdenes</th><th>Total Gastado</th><th>Última Compra</th></tr></thead>
+                        <tbody id="clientesTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VISTA PRODUCTOS -->
             <section id="view-productos" class="hidden">
                 <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
                     <button class="btn-main" style="width:auto;" onclick="openModalProducto()"><i class="fas fa-plus"></i> Nuevo Producto</button>
@@ -135,6 +179,7 @@
                 </div>
             </section>
 
+            <!-- VISTA CONTACTOS -->
             <section id="view-contactos" class="hidden">
                 <div class="table-wrap">
                     <table><thead><tr><th>Tipo</th><th>Nombre</th><th>Email</th><th>Mensaje</th><th>Estado</th></tr></thead><tbody id="bandejaTbody"></tbody></table>
@@ -187,43 +232,33 @@
         let API_KEY = localStorage.getItem(LS_KEY) || '';
         let state = { pedidos: [], productos: [], cotizaciones: [], contactos: [], stats: {} };
         let currentPage = 1; const itemsPerPage = 10;
-        
+        let chartSalesInstance = null, chartStatusInstance = null;
+
         // THEME
         const root = document.documentElement, themeToggle = document.getElementById('themeToggle');
         if (localStorage.getItem('admin-theme') === 'light') { root.setAttribute('data-theme', 'light'); themeToggle.innerHTML = '<i class="fas fa-sun"></i> Claro'; }
         themeToggle.onclick = () => {
             if (root.hasAttribute('data-theme')) { root.removeAttribute('data-theme'); themeToggle.innerHTML = '<i class="fas fa-moon"></i> Tema'; localStorage.setItem('admin-theme', 'dark'); }
             else { root.setAttribute('data-theme', 'light'); themeToggle.innerHTML = '<i class="fas fa-sun"></i> Claro'; localStorage.setItem('admin-theme', 'light'); }
+            // Recargar gráficas para ajustar colores
+            if(state.stats.ingresos_totales) renderDashboardCharts();
         };
 
-        // API
         async function apiPost(payload) {
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ ...payload, apiKey: API_KEY }), headers: { 'Content-Type': 'text/plain' } });
             return res.json();
         }
 
-        // LOGIN CORREGIDO
+        // LOGIN
         document.getElementById('loginBtn').onclick = async () => {
-            const key = document.getElementById('loginInput').value.trim(); // .trim() limpia espacios
+            const key = document.getElementById('loginInput').value.trim();
             const err = document.getElementById('loginError');
-            if (!key) return;
-            API_KEY = key;
-            err.textContent = 'Verificando...';
+            if (!key) return; API_KEY = key; err.textContent = 'Verificando...';
             try {
                 const r = await apiPost({ accion: 'estadisticas' });
-                if (r.ok) { 
-                    localStorage.setItem(LS_KEY, key); 
-                    document.getElementById('loginScreen').classList.add('hidden'); 
-                    document.getElementById('app').classList.remove('hidden'); 
-                    loadAll(); 
-                } else { 
-                    err.textContent = 'Error: ' + (r.error || 'API Key inválida'); 
-                    API_KEY = ''; 
-                }
-            } catch { 
-                err.textContent = 'Error de conexión (Revisa la URL)'; 
-                API_KEY = ''; 
-            }
+                if (r.ok) { localStorage.setItem(LS_KEY, key); document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); loadAll(); } 
+                else { err.textContent = 'Error: ' + (r.error || 'API Key inválida'); API_KEY = ''; }
+            } catch { err.textContent = 'Error de conexión'; API_KEY = ''; }
         };
         document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem(LS_KEY); location.reload(); };
 
@@ -235,6 +270,7 @@
                 btn.classList.add('active');
                 document.getElementById('view-' + btn.dataset.view).classList.remove('hidden');
                 document.getElementById('pageTitle').textContent = btn.textContent.trim();
+                if(btn.dataset.view === 'dashboard') renderDashboardCharts();
             };
         });
 
@@ -249,50 +285,162 @@
                 
                 const s = await apiPost({ accion: 'estadisticas' });
                 if (s.ok) {
+                    state.stats = s.stats;
                     const st = s.stats;
                     document.getElementById('kpiGrid').innerHTML = `
                         <div class="kpi-card"><div class="kpi-label">Ingresos Totales</div><div class="kpi-val">$${st.ingresos_totales.toLocaleString()}</div></div>
                         <div class="kpi-card"><div class="kpi-label">Pedidos Totales</div><div class="kpi-val">${st.total_pedidos}</div></div>
                         <div class="kpi-card"><div class="kpi-label">Ticket Promedio</div><div class="kpi-val">$${st.ticket_promedio.toLocaleString()}</div></div>
+                        <div class="kpi-card"><div class="kpi-label">Clientes Únicos</div><div class="kpi-val">${new Set(state.pedidos.map(p=>p.cliente_email)).size}</div></div>
                     `;
                 }
-                renderPedidos(); renderProductos(); renderBandeja(); actualizarBadges();
+                renderPedidos(); renderClientes(); renderProductos(); renderBandeja(); actualizarBadges();
+                renderDashboardCharts();
             }
         }
 
-        function actualizarBadges() {
-            const p = state.pedidos.filter(x => x.estado === 'Pendiente').length;
-            const c = state.contactos.filter(x => !x.leido).length + state.cotizaciones.filter(x => x.estado !== 'Atendida').length;
-            document.getElementById('badgePedidos').textContent = p; document.getElementById('badgePedidos').classList.toggle('hidden', p===0);
-            document.getElementById('badgeContactos').textContent = c; document.getElementById('badgeContactos').classList.toggle('hidden', c===0);
+        // GRÁFICAS (CHART.JS)
+        function renderDashboardCharts() {
+            const isDark = !root.hasAttribute('data-theme');
+            const textColor = isDark ? '#a0b8aa' : '#1a3a2a';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+
+            // 1. Gráfica de Líneas (Ingresos Últimos 7 días)
+            const last7Days = [...Array(7)].map((_, i) => {
+                const d = new Date(); d.setDate(d.getDate() - (6 - i));
+                return d.toISOString().split('T')[0];
+            });
+            const salesData = last7Days.map(date => {
+                return state.pedidos.filter(p => p.fecha && p.fecha.startsWith(date) && p.estado !== 'Cancelado').reduce((sum, p) => sum + Number(p.total), 0);
+            });
+
+            if (chartSalesInstance) chartSalesInstance.destroy();
+            const ctxSales = document.getElementById('salesChart').getContext('2d');
+            chartSalesInstance = new Chart(ctxSales, {
+                type: 'line',
+                data: {
+                    labels: last7Days.map(d => d.slice(5).replace('-', '/')),
+                    datasets: [{
+                        label: 'Ingresos ($)',
+                        data: salesData,
+                        borderColor: '#03fa6e',
+                        backgroundColor: 'rgba(3, 250, 110, 0.1)',
+                        borderWidth: 3, tension: 0.4, fill: true,
+                        pointBackgroundColor: '#011a0c', pointBorderColor: '#03fa6e', pointBorderWidth: 2, pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: gridColor } },
+                        x: { ticks: { color: textColor }, grid: { display: false } }
+                    }
+                }
+            });
+
+            // 2. Gráfica de Dona (Estatus de Pedidos)
+            const statusCounts = { 'Pendiente': 0, 'Completado': 0, 'Cancelado': 0 };
+            state.pedidos.forEach(p => { if(statusCounts[p.estado] !== undefined) statusCounts[p.estado]++; });
+            
+            if (chartStatusInstance) chartStatusInstance.destroy();
+            const ctxStatus = document.getElementById('statusChart').getContext('2d');
+            chartStatusInstance = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendiente', 'Completado', 'Cancelado'],
+                    datasets: [{
+                        data: [statusCounts['Pendiente'], statusCounts['Completado'], statusCounts['Cancelado']],
+                        backgroundColor: ['#ffb020', '#03fa6e', '#ff4d4d'],
+                        borderWidth: 0, hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: textColor, padding: 20 } } },
+                    cutout: '70%'
+                }
+            });
         }
 
+        // RENDER PEDIDOS CON FILTRO
         function renderPedidos() {
             const tbody = document.getElementById('pedidosTbody');
+            const search = document.getElementById('searchPedidos').value.toLowerCase();
+            const dateFilter = document.getElementById('filterDate').value;
+            
+            let filtered = state.pedidos;
+
+            if (search) {
+                filtered = filtered.filter(p => p.id_pedido.toLowerCase().includes(search) || p.cliente_nombre.toLowerCase().includes(search));
+            }
+
+            const now = new Date();
+            if (dateFilter === 'today') {
+                filtered = filtered.filter(p => new Date(p.fecha).toDateString() === now.toDateString());
+            } else if (dateFilter === 'week') {
+                const weekAgo = new Date(now.setDate(now.getDate() - 7));
+                filtered = filtered.filter(p => new Date(p.fecha) >= weekAgo);
+            } else if (dateFilter === 'month') {
+                filtered = filtered.filter(p => new Date(p.fecha).getMonth() === now.getMonth() && new Date(p.fecha).getFullYear() === now.getFullYear());
+            }
+
             const start = (currentPage - 1) * itemsPerPage, end = start + itemsPerPage;
-            const paginated = state.pedidos.slice(start, end);
+            const paginated = filtered.slice(start, end);
             
-            tbody.innerHTML = paginated.map(p => `<tr>
-                <td style="font-family:monospace">${p.id_pedido}</td>
-                <td>${p.cliente_nombre}</td>
-                <td>$${p.total}</td>
-                <td><span class="badge ${p.estado === 'Completado' ? 'bg-completed' : 'bg-pending'}">${p.estado}</span></td>
-                <td><button class="btn-outline" onclick="openModalPedido('${p.id_pedido}')">Ver</button></td>
-            </tr>`).join('');
+            tbody.innerHTML = paginated.map(p => {
+                const d = new Date(p.fecha).toLocaleDateString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+                return `<tr>
+                    <td style="font-family:monospace">${p.id_pedido}</td>
+                    <td>${d}</td>
+                    <td>${p.cliente_nombre}</td>
+                    <td>$${p.total}</td>
+                    <td><span class="badge ${p.estado === 'Completado' ? 'bg-completed' : p.estado === 'Cancelado' ? 'bg-danger' : 'bg-pending'}">${p.estado}</span></td>
+                    <td><button class="btn-outline" onclick="openModalPedido('${p.id_pedido}')">Ver</button></td>
+                </tr>`;
+            }).join('');
             
-            const totalPages = Math.ceil(state.pedidos.length / itemsPerPage);
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
             document.getElementById('paginationContainer').innerHTML = Array.from({length: totalPages}, (_, i) => `
                 <button class="page-btn ${i+1 === currentPage ? 'active' : ''}" onclick="currentPage=${i+1}; renderPedidos()">${i+1}</button>
             `).join('');
         }
+        document.getElementById('searchPedidos').addEventListener('input', () => { currentPage = 1; renderPedidos(); });
 
+        // CRM DE CLIENTES
+        function renderClientes() {
+            const customers = {};
+            state.pedidos.forEach(p => {
+                if(!p.cliente_email) return;
+                if(!customers[p.cliente_email]) {
+                    customers[p.cliente_email] = { nombre: p.cliente_nombre, email: p.cliente_email, orders: 0, total: 0, lastDate: p.fecha };
+                }
+                customers[p.cliente_email].orders += 1;
+                customers[p.cliente_email].total += Number(p.total);
+                if(new Date(p.fecha) > new Date(customers[p.cliente_email].lastDate)) customers[p.cliente_email].lastDate = p.fecha;
+            });
+
+            const sorted = Object.values(customers).sort((a,b) => b.total - a.total);
+            
+            document.getElementById('clientesTbody').innerHTML = sorted.map(c => `
+                <tr>
+                    <td><strong>${c.nombre}</strong></td>
+                    <td>${c.email}</td>
+                    <td><span class="badge bg-pending">${c.orders} pedidos</span></td>
+                    <td style="color:var(--primary); font-weight:bold;">$${c.total.toLocaleString()}</td>
+                    <td>${new Date(c.lastDate).toLocaleDateString('es-MX')}</td>
+                </tr>
+            `).join('');
+        }
+
+        // MODAL PEDIDO (CON HISTORIAL)
         window.openModalPedido = (id) => {
             const p = state.pedidos.find(x => x.id_pedido === id);
             document.getElementById('mPedidoId').textContent = p.id_pedido;
             
             const historial = state.pedidos.filter(x => x.cliente_email === p.cliente_email && x.id_pedido !== p.id_pedido);
             const gastoTotal = historial.reduce((s, x) => s + Number(x.total), 0);
-            let histHtml = historial.length > 0 ? `<div style="background:var(--bg-card); padding:15px; border-radius:10px; margin-top:15px;"><h4>Historial del Cliente</h4><p>Compras previas: ${historial.length} | Gasto total: $${gastoTotal}</p></div>` : '<p style="margin-top:15px;font-size:0.9rem;color:var(--text-sec)">Cliente nuevo (sin historial).</p>';
+            let histHtml = historial.length > 0 ? `<div style="background:var(--bg-card); padding:15px; border-radius:10px; margin-top:15px;"><h4>Historial (${historial.length} compras)</h4><p>Gasto histórico: <strong>$${gastoTotal}</strong></p></div>` : '<p style="margin-top:15px;font-size:0.9rem;color:var(--text-sec)">Cliente nuevo (sin historial).</p>';
 
             document.getElementById('mPedidoContent').innerHTML = `
                 <p><strong>Cliente:</strong> ${p.cliente_nombre} (${p.cliente_email})</p>
@@ -328,31 +476,16 @@
                 <td>${p.nombre}</td>
                 <td>$${p.precio}</td>
                 <td>${p.activo ? 'Visible' : 'Oculto'}</td>
-                <td><button class="btn-outline" onclick="editProd('${p.id}')"><i class="fas fa-edit"></i></button></td>
+                <td><button class="btn-outline" onclick="editProd('${p.id}')"><i class="fas fa-edit"></i> Editar</button></td>
             </tr>`).join('');
         }
 
-        window.openModalProducto = () => {
-            document.getElementById('formProducto').reset();
-            document.getElementById('prodId').value = '';
-            document.getElementById('prodImagenPreview').style.display = 'none';
-            document.getElementById('mProdTitle').textContent = 'Nuevo Producto';
-            document.getElementById('modalProducto').classList.add('open');
-        };
-
+        window.openModalProducto = () => { document.getElementById('formProducto').reset(); document.getElementById('prodId').value = ''; document.getElementById('prodImagenPreview').style.display = 'none'; document.getElementById('mProdTitle').textContent = 'Nuevo Producto'; document.getElementById('modalProducto').classList.add('open'); };
         window.editProd = (id) => {
             const p = state.productos.find(x => x.id === id);
-            document.getElementById('prodId').value = p.id;
-            document.getElementById('prodNombre').value = p.nombre;
-            document.getElementById('prodDesc').value = p.descripcion || '';
-            document.getElementById('prodPrecio').value = p.precio;
-            document.getElementById('prodCat').value = p.categoria;
-            document.getElementById('prodEtiqueta').value = p.etiqueta || '';
-            document.getElementById('prodActivo').value = p.activo ? 'true' : 'false';
-            document.getElementById('prodImagenUrl').value = p.imagen_url || '';
+            document.getElementById('prodId').value = p.id; document.getElementById('prodNombre').value = p.nombre; document.getElementById('prodDesc').value = p.descripcion || ''; document.getElementById('prodPrecio').value = p.precio; document.getElementById('prodCat').value = p.categoria; document.getElementById('prodEtiqueta').value = p.etiqueta || ''; document.getElementById('prodActivo').value = p.activo ? 'true' : 'false'; document.getElementById('prodImagenUrl').value = p.imagen_url || '';
             if(p.imagen_url) { document.getElementById('prodImagenPreview').src = p.imagen_url; document.getElementById('prodImagenPreview').style.display = 'block'; }
-            document.getElementById('mProdTitle').textContent = 'Editar Producto';
-            document.getElementById('modalProducto').classList.add('open');
+            document.getElementById('mProdTitle').textContent = 'Editar Producto'; document.getElementById('modalProducto').classList.add('open');
         };
 
         document.getElementById('prodImagenFile').onchange = (e) => {
@@ -361,56 +494,29 @@
             reader.onload = (event) => {
                 const img = new Image(); img.src = event.target.result;
                 img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width, height = img.height;
+                    const canvas = document.createElement('canvas'); let width = img.width, height = img.height;
                     if (width > 800) { height = Math.round((height * 800) / width); width = 800; }
-                    canvas.width = width; canvas.height = height;
-                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                    canvas.width = width; canvas.height = height; canvas.getContext('2d').drawImage(img, 0, 0, width, height);
                     const base64 = canvas.toDataURL('image/jpeg', 0.8);
-                    document.getElementById('prodImagenUrl').value = base64;
-                    document.getElementById('prodImagenPreview').src = base64; document.getElementById('prodImagenPreview').style.display = 'block';
+                    document.getElementById('prodImagenUrl').value = base64; document.getElementById('prodImagenPreview').src = base64; document.getElementById('prodImagenPreview').style.display = 'block';
                 };
-            };
-            reader.readAsDataURL(file);
+            }; reader.readAsDataURL(file);
         };
 
         document.getElementById('formProducto').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btnSaveProd'); btn.textContent = 'Guardando...'; btn.disabled = true;
+            e.preventDefault(); const btn = document.getElementById('btnSaveProd'); btn.textContent = 'Guardando...'; btn.disabled = true;
             let imgUrl = document.getElementById('prodImagenUrl').value;
-            
-            if (imgUrl.startsWith('data:image')) {
-                const up = await apiPost({ accion: 'subir_imagen', base64: imgUrl });
-                if (up.ok) imgUrl = up.url;
-            }
-            
-            const payload = {
-                accion: document.getElementById('prodId').value ? 'actualizar_producto' : 'nuevo_producto',
-                id: document.getElementById('prodId').value || undefined,
-                nombre: document.getElementById('prodNombre').value,
-                descripcion: document.getElementById('prodDesc').value,
-                precio: document.getElementById('prodPrecio').value,
-                categoria: document.getElementById('prodCat').value,
-                etiqueta: document.getElementById('prodEtiqueta').value,
-                activo: document.getElementById('prodActivo').value === 'true',
-                imagen_url: imgUrl
-            };
-            
-            const res = await apiPost(payload);
-            btn.textContent = 'Guardar'; btn.disabled = false;
+            if (imgUrl.startsWith('data:image')) { const up = await apiPost({ accion: 'subir_imagen', base64: imgUrl }); if (up.ok) imgUrl = up.url; }
+            const payload = { accion: document.getElementById('prodId').value ? 'actualizar_producto' : 'nuevo_producto', id: document.getElementById('prodId').value || undefined, nombre: document.getElementById('prodNombre').value, descripcion: document.getElementById('prodDesc').value, precio: document.getElementById('prodPrecio').value, categoria: document.getElementById('prodCat').value, etiqueta: document.getElementById('prodEtiqueta').value, activo: document.getElementById('prodActivo').value === 'true', imagen_url: imgUrl };
+            const res = await apiPost(payload); btn.textContent = 'Guardar'; btn.disabled = false;
             if (res.ok) { document.getElementById('modalProducto').classList.remove('open'); loadAll(); } else { alert('Error: ' + res.error); }
         };
 
         function renderBandeja() {
-            const all = [
-                ...state.contactos.map(c => ({ tipo: 'Contacto', ...c })),
-                ...state.cotizaciones.map(c => ({ tipo: 'Cotización', ...c }))
-            ].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
-            
+            const all = [...state.contactos.map(c => ({ tipo: 'Contacto', ...c })), ...state.cotizaciones.map(c => ({ tipo: 'Cotización', ...c }))].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
             document.getElementById('bandejaTbody').innerHTML = all.map(c => `<tr>
                 <td><span class="badge ${c.tipo === 'Contacto' ? 'bg-pending' : 'bg-completed'}">${c.tipo}</span></td>
-                <td>${c.nombre}</td>
-                <td>${c.email}</td>
+                <td>${c.nombre}</td><td>${c.email}</td>
                 <td>${c.mensaje ? c.mensaje.substring(0,30) + '...' : '-'}</td>
                 <td>${c.leido || c.estado === 'Atendida' ? 'Visto' : 'Nuevo'}</td>
             </tr>`).join('');

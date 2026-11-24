@@ -9,11 +9,9 @@
     <link rel="canonical" href="https://mzgsys.com.mx/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="MZG Systems · Soluciones tecnológicas avanzadas">
-    <meta property="og:description" content="Protegemos, optimizamos y modernizamos tu entorno profesional con un estándar de excelencia.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80&auto=format&fit=crop">
     <meta property="og:url" content="https://mzgsys.com.mx">
-    <meta name="twitter:card" content="summary_large_image">
-
+    
     <!-- SEO JSON-LD -->
     <script type="application/ld+json">
     {
@@ -60,11 +58,6 @@
         @keyframes progressGradient { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         
-        /* Cursor */
-        .cursor-dot { width: 6px; height: 6px; background: var(--color-primary); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); opacity: 0; mix-blend-mode: difference; } 
-        .cursor-ring { width: 36px; height: 36px; border: 2px solid var(--color-primary); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); opacity: 0; mix-blend-mode: difference; } 
-        .cursor-dot.show, .cursor-ring.show { opacity: 1; }
-
         /* Header */
         header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 16px 0; background: rgba(1, 26, 12, 0.4); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.04); transition: var(--transition); } 
         header.scrolled { background: rgba(1, 26, 12, 0.85); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); border-bottom: 1px solid rgba(3, 250, 110, 0.2); } 
@@ -89,11 +82,10 @@
         .btn-secondary { background: transparent; color: var(--text-primary); border: 2px solid var(--border-glass); } .btn-secondary:hover { border-color: var(--color-primary); color: var(--color-primary); transform: translateY(-4px); } .btn-secondary:active { transform: scale(0.95); }
         .section-title { font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 16px; } .section-subtitle { color: var(--text-secondary); font-size: 1.1rem; max-width: 640px; margin-bottom: 48px; } .section-header { text-align: center; margin-bottom: 56px; } .section-header .section-subtitle { margin: 0 auto; }
         
-        /* Trust, About, Pricing, Clients, Services */
+        /* Trust, About, Pricing, Services */
         .trust-strip { padding: 40px 0; border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass); position: relative; z-index: 1; } .trust-inner { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; } .trust-item { display: flex; align-items: center; gap: 12px; font-weight: 600; } .mini-logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); color: #011a0c; display: flex; align-items: center; justify-content: center; }
         .about { padding: 80px 0; background: var(--bg-secondary); position: relative; z-index: 1; } .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; } .about-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; } .value-item { background: var(--bg-card-glass); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 28px 16px; text-align: center; backdrop-filter: blur(12px); } .value-icon { font-size: 2.8rem; color: var(--color-primary); margin-bottom: 12px; }
         .pricing { padding: 80px 0; position: relative; z-index: 1; } .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; } .pricing-card { background: var(--bg-card-glass); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 36px 30px; display: flex; flex-direction: column; backdrop-filter: blur(12px); } .pricing-card.featured { border-color: var(--color-primary); transform: translateY(-8px); box-shadow: 0 20px 60px rgba(3, 250, 110, 0.15); } .pricing-price { font-size: 2.4rem; font-weight: 700; color: var(--color-primary); } .pricing-features { list-style: none; margin-bottom: 24px; flex-grow: 1; } .pricing-features li { padding: 8px 0; color: var(--text-secondary); display: flex; gap: 10px; } .pricing-features li i { color: var(--color-primary); margin-top: 5px; }
-        .clients { padding: 80px 0; position: relative; z-index: 1; } .clients-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; } .client-card { background: var(--bg-card-glass); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 32px 28px; backdrop-filter: blur(12px); } .client-logo { width: 72px; height: 72px; border-radius: 16px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); color: #011a0c; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; }
         .services { padding: 80px 0; background: var(--bg-secondary); position: relative; z-index: 1; } .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; } .service-card { background: var(--bg-card-glass); border-radius: var(--radius); border: 1px solid var(--border-glass); cursor: pointer; overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(12px); transition: 0.3s; } .service-card:hover { transform: translateY(-10px); border-color: var(--color-primary); } .service-image { height: 200px; overflow: hidden; } .service-image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8); transition: 0.8s; } .service-card:hover .service-image img { transform: scale(1.08); filter: saturate(1.1); } .service-body { padding: 24px; } .category-tag { display: inline-block; margin-top: 16px; font-size: 0.7rem; font-weight: 600; color: var(--color-primary); border: 1px solid var(--color-primary); padding: 4px 14px; border-radius: 50px; }
 
         /* TIENDA Y BUSCADOR */
@@ -144,12 +136,23 @@
 
         .contact { padding: 80px 0; position: relative; z-index: 1; } .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-form input, .contact-form textarea { width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--border-glass); background: var(--bg-card-glass); color: var(--text-primary); }
-        footer { padding: 40px 0; border-top: 1px solid var(--border-glass); text-align: center; position: relative; z-index: 1; }
+        
+        /* FOOTER COMPLETO */
+        footer { position: relative; z-index: 1; background: var(--bg-dark); border-top: 1px solid var(--border-glass); padding: 60px 0 20px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 40px; }
+        .footer-brand p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px; }
+        .footer-links h4, .footer-social h4 { font-size: 1.1rem; margin-bottom: 20px; color: var(--text-primary); }
+        .footer-links ul { list-style: none; } .footer-links ul li { margin-bottom: 10px; } .footer-links ul li a { color: var(--text-secondary); font-size: 0.9rem; transition: 0.3s; } .footer-links ul li a:hover { color: var(--color-primary); }
+        .footer-social .social-icons { display: flex; gap: 12px; margin-top: 15px; }
+        .footer-social .social-icons a { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-card-glass); border: 1px solid var(--border-glass); display: flex; align-items: center; justify-content: center; color: var(--text-primary); transition: 0.3s; }
+        .footer-social .social-icons a:hover { background: var(--color-primary); color: #011a0c; transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-glass); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); }
 
         .whatsapp-float { position: fixed; bottom: 30px; left: 30px; z-index: 999; width: 60px; height: 60px; border-radius: 50%; background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem; animation: pulse 2s infinite; box-shadow: 0 4px 15px rgba(37,211,102,0.4); }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.6); } 70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
         
-        @media (max-width: 768px) { .about-grid, .contact-wrapper { grid-template-columns: 1fr; } .nav-links { display: none; } .hamburger { display: flex; } .hero h1 { font-size: 2.8rem; } .store-controls { flex-direction: column; align-items: stretch; } .search-input { width: 100%; } }
+        @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 768px) { .about-grid, .contact-wrapper { grid-template-columns: 1fr; } .nav-links { display: none; } .hamburger { display: flex; } .hero h1 { font-size: 2.8rem; } .store-controls { flex-direction: column; align-items: stretch; } .search-input { width: 100%; } .footer-grid { grid-template-columns: 1fr; text-align: center; } .footer-social .social-icons { justify-content: center; } .footer-bottom { flex-direction: column; gap: 10px; text-align: center; } }
     </style>
 </head>
 <body>
@@ -166,7 +169,6 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="#about">Nosotros</a></li>
-                    <li><a href="#pricing">Planes</a></li>
                     <li><a href="#services">Servicios</a></li>
                     <li><a href="#tienda">Tienda</a></li>
                     <li><a href="#rastreo">Rastreo</a></li>
@@ -179,7 +181,6 @@
         </div>
     </header>
 
-    <!-- Hero -->
     <section class="hero">
         <div class="container hero-content">
             <span class="hero-badge reveal">Innovación & seguridad</span>
@@ -192,7 +193,6 @@
         </div>
     </section>
 
-    <!-- Trust -->
     <section class="trust-strip reveal">
         <div class="container trust-inner">
             <div class="trust-item"><span class="mini-logo">AE</span> AE Supervision</div>
@@ -202,7 +202,6 @@
         </div>
     </section>
 
-    <!-- About -->
     <section class="about" id="about">
         <div class="container about-grid">
             <div class="about-text reveal">
@@ -217,32 +216,6 @@
         </div>
     </section>
 
-    <!-- Pricing -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <h2 class="section-title reveal">Planes y precios</h2>
-            <div class="pricing-grid reveal">
-                <div class="pricing-card">
-                    <h3>Soporte Esencial</h3>
-                    <div class="pricing-price">$800 <small>+ IVA</small></div>
-                    <ul class="pricing-features" style="margin-top:20px;">
-                        <li><i class="fas fa-check"></i> Hasta 5 dispositivos</li>
-                        <li><i class="fas fa-check"></i> Soporte remoto</li>
-                    </ul>
-                </div>
-                <div class="pricing-card featured">
-                    <h3>Soporte Empresarial</h3>
-                    <div class="pricing-price">$2,500 <small>+ IVA</small></div>
-                    <ul class="pricing-features" style="margin-top:20px;">
-                        <li><i class="fas fa-check"></i> Hasta 20 dispositivos</li>
-                        <li><i class="fas fa-check"></i> Prioridad < 4 h</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services -->
     <section class="services" id="services">
         <div class="container">
             <h2 class="section-title reveal">Servicios especializados</h2>
@@ -263,7 +236,6 @@
         </div>
     </section>
 
-    <!-- TIENDA CON BUSCADOR Y FILTROS -->
     <section class="store" id="tienda">
         <div class="container">
             <div class="section-header reveal">
@@ -276,13 +248,10 @@
                 <div class="category-filters" id="categoryFilters"></div>
             </div>
             
-            <div class="store-grid" id="storeGrid">
-                <!-- Skeletons se generan con JS -->
-            </div>
+            <div class="store-grid" id="storeGrid"></div>
         </div>
     </section>
 
-    <!-- RASTREO DE PEDIDOS -->
     <section class="tracking-section reveal" id="rastreo">
         <div class="container">
             <div class="tracking-box">
@@ -297,7 +266,6 @@
         </div>
     </section>
 
-    <!-- Contacto -->
     <section class="contact" id="contact">
         <div class="container">
             <h2 class="section-title reveal">Hablemos de tu proyecto</h2>
@@ -316,7 +284,51 @@
         </div>
     </section>
 
-    <footer><p>&copy; <span id="year"></span> MZG Systems</p></footer>
+    <!-- FOOTER COMPLETO -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-mark">&lt;<span class="slash">/</span>&gt;</span>
+                        <span class="logo-text"><span class="brand">MZG</span><span class="brand-sub">Systems</span></span>
+                    </div>
+                    <p>Soluciones tecnológicas avanzadas con un enfoque minimalista y orientado a resultados.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces rápidos</h4>
+                    <ul>
+                        <li><a href="#about">Nosotros</a></li>
+                        <li><a href="#services">Servicios</a></li>
+                        <li><a href="#tienda">Tienda</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Aviso de Privacidad</a></li>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Facturación</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <p style="margin-top:15px; color:var(--text-secondary); font-size:0.9rem;"><i class="fas fa-envelope"></i> info@mzgsys.com.mx</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; <span id="year"></span> MZG Systems · Todos los derechos reservados.</span>
+                <span>Hecho con <i class="fas fa-heart" style="color:var(--color-primary);"></i> en CDMX</span>
+            </div>
+        </div>
+    </footer>
 
     <!-- CARRITO -->
     <div class="cart-overlay" id="cartOverlay"></div>
@@ -336,14 +348,12 @@
     </aside>
 
     <script>
-        // CONFIGURACIÓN
         const API_URL = 'https://script.google.com/macros/s/AKfycbxbYBqYx1uTF2TfzC34zwgqsk-s76UHvQ0dVhirC8qQGWxY1IQnq1eVjb_c5WPpy8if/exec';
-        const PUBLIC_KEY = 'MZG_pub_2026_xyz987'; // <--- ASEGÚRATE DE QUE COINCIDA CON GOOGLE APPS SCRIPT
+        const PUBLIC_KEY = 'MZG_pub_2026_xyz987'; 
         const WA_NUMBER = '5215512345678';
 
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // TEMA CLARO/OSCURO
         const themeToggle = document.getElementById('themeToggle'), root = document.documentElement;
         if (localStorage.getItem('theme') === 'light') { root.setAttribute('data-theme', 'light'); themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; }
         themeToggle.addEventListener('click', () => {
@@ -351,7 +361,6 @@
             else { root.setAttribute('data-theme', 'light'); themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; localStorage.setItem('theme', 'light'); }
         });
 
-        // EFECTOS VISUALES (RESTAURADOS)
         const observer = new IntersectionObserver(entries => {
             entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
         }, { threshold: 0.15 });
@@ -364,22 +373,12 @@
             header.classList.toggle('scrolled', s > 60); 
         });
 
-        // LÓGICA DE TIENDA
         let PRODUCTS = [], cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        const storeGrid = document.getElementById('storeGrid');
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilters = document.getElementById('categoryFilters');
+        const storeGrid = document.getElementById('storeGrid'), searchInput = document.getElementById('searchInput'), categoryFilters = document.getElementById('categoryFilters');
         let currentCategory = 'Todos', currentSearch = '';
 
         function renderSkeletons() {
-            storeGrid.innerHTML = Array(8).fill().map(() => `
-                <div class="skeleton-card">
-                    <div class="skeleton-img"></div>
-                    <div class="skeleton-text"></div>
-                    <div class="skeleton-text short"></div>
-                    <div class="skeleton-text"></div>
-                </div>
-            `).join('');
+            storeGrid.innerHTML = Array(8).fill().map(() => `<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div><div class="skeleton-text short"></div><div class="skeleton-text"></div></div>`).join('');
         }
 
         async function fetchProducts() {
@@ -392,10 +391,9 @@
                         id: p.id, name: p.nombre, desc: p.descripcion, price: Number(p.precio),
                         cat: p.categoria, image: p.imagen_url || 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&q=75', etiqueta: p.etiqueta || ''
                     }));
-                    renderCategories();
-                    renderStore();
+                    renderCategories(); renderStore();
                 }
-            } catch (e) { console.error(e); storeGrid.innerHTML = '<p style="text-align:center;width:100%">Error al cargar productos.</p>'; }
+            } catch (e) { storeGrid.innerHTML = '<p style="text-align:center;width:100%">Error al cargar productos.</p>'; }
         }
 
         function renderCategories() {
@@ -411,23 +409,18 @@
                 const matchSearch = p.name.toLowerCase().includes(currentSearch) || p.desc.toLowerCase().includes(currentSearch);
                 return matchCat && matchSearch;
             });
-
             if (filtered.length === 0) { storeGrid.innerHTML = '<p style="text-align:center;width:100%;grid-column:1/-1">No se encontraron productos.</p>'; return; }
-
             storeGrid.innerHTML = filtered.map(p => {
                 let badgeHtml = '';
                 if(p.etiqueta === 'Nuevo') badgeHtml = '<span class="product-badge badge-nuevo">Nuevo</span>';
                 else if(p.etiqueta === 'Oferta') badgeHtml = '<span class="product-badge badge-oferta">Oferta</span>';
                 else if(p.etiqueta === 'Top') badgeHtml = '<span class="product-badge badge-top">Top</span>';
-
                 return `
                 <article class="product-card">
                     ${badgeHtml}
                     <div class="product-image"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
                     <div class="product-body">
-                        <span class="product-cat">${p.cat}</span>
-                        <h3>${p.name}</h3>
-                        <p>${p.desc}</p>
+                        <span class="product-cat">${p.cat}</span><h3>${p.name}</h3><p>${p.desc}</p>
                         <div class="product-footer">
                             <div class="product-price">$${p.price.toLocaleString('es-MX')}<small>+ IVA</small></div>
                             <div class="product-actions">
@@ -440,92 +433,57 @@
             }).join('');
         }
 
-        function addToCart(id) {
-            const p = PRODUCTS.find(x => x.id === id);
-            const found = cart.find(i => i.id === id);
-            if (found) found.qty += 1; else cart.push({ ...p, qty: 1 });
-            saveCart(); updateCart();
-        }
+        function addToCart(id) { const p = PRODUCTS.find(x => x.id === id); const found = cart.find(i => i.id === id); if (found) found.qty += 1; else cart.push({ ...p, qty: 1 }); saveCart(); updateCart(); }
         window.addToCart = addToCart;
         
         function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
         function updateCart() {
-            const cartCount = document.getElementById('cartCount'), cartItems = document.getElementById('cartItems');
-            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-            
+            const cartCount = document.getElementById('cartCount'), cartItems = document.getElementById('cartItems'), subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
             cartCount.textContent = cart.reduce((s, i) => s + i.qty, 0);
             document.getElementById('cartSubtotal').textContent = `$${subtotal.toLocaleString('es-MX', {minimumFractionDigits:2})}`;
             document.getElementById('cartIva').textContent = `$${(subtotal * 0.16).toLocaleString('es-MX', {minimumFractionDigits:2})}`;
             document.getElementById('cartTotal').textContent = `$${(subtotal * 1.16).toLocaleString('es-MX', {minimumFractionDigits:2})}`;
             document.getElementById('checkoutBtn').disabled = cart.length === 0;
-
-            cartItems.innerHTML = cart.length === 0 ? '<div class="cart-empty">Carrito vacío</div>' : cart.map(i => `
-                <div class="cart-item">
-                    <div class="cart-item-img"><img src="${i.image}"></div>
-                    <div class="cart-item-info"><h4>${i.name}</h4><span>$${i.price}</span></div>
-                    <div class="cart-qty"><button onclick="updateQty('${i.id}',-1)">-</button><span>${i.qty}</span><button onclick="updateQty('${i.id}',1)">+</button></div>
-                </div>
-            `).join('');
+            cartItems.innerHTML = cart.length === 0 ? '<div class="cart-empty">Carrito vacío</div>' : cart.map(i => `<div class="cart-item"><div class="cart-item-img"><img src="${i.image}"></div><div class="cart-item-info"><h4>${i.name}</h4><span>$${i.price}</span></div><div class="cart-qty"><button onclick="updateQty('${i.id}',-1)">-</button><span>${i.qty}</span><button onclick="updateQty('${i.id}',1)">+</button></div></div>`).join('');
         }
-        
-        window.updateQty = (id, delta) => {
-            const item = cart.find(i => i.id === id);
-            if (!item) return;
-            item.qty += delta;
-            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-            saveCart(); updateCart();
-        }
+        window.updateQty = (id, delta) => { const item = cart.find(i => i.id === id); if (!item) return; item.qty += delta; if (item.qty <= 0) cart = cart.filter(i => i.id !== id); saveCart(); updateCart(); }
 
         document.getElementById('cartBtn').onclick = () => { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); };
         document.getElementById('cartClose').onclick = () => { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); };
         document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); };
 
-        // Enviar Pedido
         document.getElementById('checkoutBtn').onclick = async () => {
             const name = document.getElementById('cName').value, email = document.getElementById('cEmail').value;
             if (name.length < 2 || !email.includes('@')) return alert('Llena tus datos correctamente');
             const btn = document.getElementById('checkoutBtn'); btn.textContent = 'Procesando...'; btn.disabled = true;
-            
             const orderNum = 'MZG-' + new Date().getFullYear() + String(new Date().getMonth()+1).padStart(2,'0') + String(new Date().getDate()).padStart(2,'0') + '-' + Math.floor(Math.random()*9000+1000);
             try {
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify({ apiKey: PUBLIC_KEY, accion: 'nuevo_pedido', id_pedido: orderNum, cliente_nombre: name, cliente_email: email, items: cart }), headers: {'Content-Type':'text/plain'} });
-                alert(`¡Pedido ${orderNum} completado! Revisa tu correo.`);
-                cart = []; saveCart(); updateCart(); 
+                alert(`¡Pedido ${orderNum} completado! Revisa tu correo.`); cart = []; saveCart(); updateCart(); 
                 document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open');
             } catch (e) { alert('Error al procesar pedido'); } finally { btn.textContent = 'Completar Pedido'; btn.disabled = false; }
         };
 
-        // Formulario de Contacto
         document.getElementById('contactForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button'); btn.textContent = 'Enviando...';
+            e.preventDefault(); const btn = e.target.querySelector('button'); btn.textContent = 'Enviando...';
             try {
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify({ apiKey: PUBLIC_KEY, accion: 'nuevo_contacto', nombre: document.getElementById('fName').value, email: document.getElementById('fEmail').value, telefono: document.getElementById('fPhone').value, mensaje: document.getElementById('fMessage').value }), headers: {'Content-Type':'text/plain'} });
                 alert('Mensaje enviado correctamente.'); e.target.reset();
             } catch { alert('Error al enviar.'); } finally { btn.textContent = 'Enviar mensaje'; }
         };
 
-        // Rastreo de Pedidos
         document.getElementById('trackingBtn').onclick = async () => {
-            const id = document.getElementById('trackingInput').value.trim();
-            const result = document.getElementById('trackingResult');
-            if (!id) return;
-            result.className = 'tracking-result'; result.style.display = 'none';
-            
+            const id = document.getElementById('trackingInput').value.trim(), result = document.getElementById('trackingResult');
+            if (!id) return; result.className = 'tracking-result'; result.style.display = 'none';
             try {
                 const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ apiKey: PUBLIC_KEY, accion: 'obtener_pedido_tracking', id_pedido: id }), headers: {'Content-Type':'text/plain'} });
                 const data = await res.json();
-                if (data.ok && data.pedido) {
-                    result.className = 'tracking-result success';
-                    result.innerHTML = `<strong>Pedido:</strong> ${data.pedido.id_pedido}<br><strong>Estado:</strong> ${data.pedido.estado}<br><strong>Total:</strong> $${data.pedido.total}`;
-                } else {
-                    result.className = 'tracking-result error'; result.textContent = 'Pedido no encontrado.';
-                }
+                if (data.ok && data.pedido) { result.className = 'tracking-result success'; result.innerHTML = `<strong>Pedido:</strong> ${data.pedido.id_pedido}<br><strong>Estado:</strong> ${data.pedido.estado}<br><strong>Total:</strong> $${data.pedido.total}`; } 
+                else { result.className = 'tracking-result error'; result.textContent = 'Pedido no encontrado.'; }
             } catch { result.className = 'tracking-result error'; result.textContent = 'Error de red.'; }
         };
 
-        fetchProducts();
-        updateCart();
+        fetchProducts(); updateCart();
     </script>
 </body>
 </html>
