@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- LIBRERÍAS PARA GENERAR PDF EN EL DASHBOARD -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- CHART.JS PARA GRÁFICAS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -109,7 +107,6 @@
             <div class="topbar">
                 <h1 id="pageTitle">Dashboard</h1>
                 <div class="top-actions">
-                    <!-- BOTÓN PDF EN DASHBOARD -->
                     <button class="btn-outline" id="btnExportDash" onclick="exportDashboardPDF()"><i class="fas fa-file-pdf"></i> PDF Resumen</button>
                     <button class="btn-outline" id="themeToggle"><i class="fas fa-moon"></i> Tema</button>
                     <button class="btn-outline" onclick="loadAll()"><i class="fas fa-sync"></i> Actualizar</button>
@@ -118,7 +115,6 @@
 
             <section id="view-dashboard">
                 <div class="kpi-grid" id="kpiGrid"></div>
-                
                 <div class="charts-grid">
                     <div class="chart-card">
                         <h3><i class="fas fa-chart-line" style="color:var(--primary)"></i> Ingresos (Últimos 7 días)</h3>
@@ -129,7 +125,6 @@
                         <div class="chart-container"><canvas id="statusChart"></canvas></div>
                     </div>
                 </div>
-
                 <div style="background:var(--bg-panel); border-radius:var(--radius); padding:20px; border:1px solid var(--border); box-shadow:var(--shadow);">
                     <h3>Últimos Pedidos</h3>
                     <div id="ultimosPedidos" style="margin-top:15px;"></div>
@@ -146,7 +141,6 @@
                         <option value="month">Este mes</option>
                     </select>
                     <div style="display:flex; gap:10px;">
-                        <!-- BOTÓN PDF EN PEDIDOS -->
                         <button class="btn-outline" onclick="exportOrdersPDF()"><i class="fas fa-file-pdf"></i> PDF Pedidos</button>
                         <button class="btn-outline" onclick="exportToCSV()"><i class="fas fa-file-csv"></i> CSV</button>
                     </div>
@@ -260,7 +254,6 @@
                 document.getElementById('view-' + btn.dataset.view).classList.remove('hidden');
                 document.getElementById('pageTitle').textContent = btn.textContent.trim();
                 
-                // Mostrar u ocultar botón de PDF según la vista
                 const btnDash = document.getElementById('btnExportDash');
                 if(btn.dataset.view === 'dashboard') btnDash.style.display = 'flex';
                 else btnDash.style.display = 'none';
@@ -270,8 +263,10 @@
         });
 
         async function loadAll() {
-            const data = await apiPost({ accion: 'dashboard_data' });
-            if (data.ok) {
+            try {
+                const data = await apiPost({ accion: 'dashboard_data' });
+                if (!data.ok) throw new Error(data.error || 'Error al cargar datos');
+                
                 state.pedidos = (data.pedidos || []).sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
                 state.productos = data.productos || [];
                 state.cotizaciones = data.cotizaciones || [];
@@ -287,9 +282,15 @@
                         <div class="kpi-card"><div class="kpi-label">Ticket Promedio</div><div class="kpi-val">$${(st.ticket_promedio || 0).toLocaleString()}</div></div>
                         <div class="kpi-card"><div class="kpi-label">Clientes Únicos</div><div class="kpi-val">${new Set(state.pedidos.map(p=>p.cliente_email).filter(Boolean)).size}</div></div>
                     `;
+                } else {
+                    throw new Error('Error al obtener estadísticas: ' + (s.error || 'Desconocido'));
                 }
                 renderPedidos(); renderClientes(); renderProductos(); renderBandeja(); actualizarBadges();
                 if(!document.getElementById('view-dashboard').classList.contains('hidden')) renderDashboardCharts();
+                
+            } catch (error) {
+                alert("Hubo un problema al cargar los datos: " + error.message + "\n\nRevisa que tu Code.gs esté actualizado y hayas creado una 'Nueva Versión' en Implementar.");
+                console.error(error);
             }
         }
 
@@ -406,7 +407,6 @@
         
         window.cambiarEstado = async (id, estado) => { await apiPost({ accion: 'actualizar_estado_pedido', id_pedido: id, estado }); loadAll(); alert('Estado actualizado'); };
 
-        // EXPORTAR PDF - DASHBOARD
         window.exportDashboardPDF = () => {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -428,44 +428,24 @@
             
             doc.autoTable({ startY: 65, head: [['Métrica', 'Valor']], body: kpis, theme: 'striped', headStyles: { fillColor: [240, 242, 245], textColor: [0,0,0] } });
             
-            // Top Productos
             if(st.top_productos && st.top_productos.length > 0) {
                 doc.text('Top 5 Productos', 14, doc.lastAutoTable.finalY + 15);
                 const top = st.top_productos.map(p => [p.name || 'Producto', p.qty]);
                 doc.autoTable({ startY: doc.lastAutoTable.finalY + 20, head: [['Producto', 'Unidades Vendidas']], body: top, theme: 'grid' });
             }
-            
             doc.save('MZG-Resumen-Ejecutivo.pdf');
         };
 
-        // EXPORTAR PDF - PEDIDOS
         window.exportOrdersPDF = () => {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
             doc.setFillColor(3, 250, 110); doc.rect(0, 0, 210, 30, 'F');
             doc.setTextColor(1, 26, 12); doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.text('MZG Systems - Lista de Pedidos', 14, 20);
-            
             doc.setTextColor(0, 0, 0); doc.setFontSize(10);
             doc.text(`Generado el: ${new Date().toLocaleString('es-MX')}`, 14, 40);
 
-            const rows = state.pedidos.map(p => [
-                p.id_pedido || 'N/A', 
-                new Date(p.fecha).toLocaleDateString('es-MX'), 
-                p.cliente_nombre || 'N/A', 
-                `$${(Number(p.total) || 0).toFixed(2)}`, 
-                p.estado || 'Pendiente'
-            ]);
-
-            doc.autoTable({
-                startY: 45,
-                head: [['ID Pedido', 'Fecha', 'Cliente', 'Total', 'Estado']],
-                body: rows,
-                theme: 'grid',
-                headStyles: { fillColor: [1, 26, 12], textColor: [3, 250, 110] },
-                styles: { fontSize: 9 }
-            });
-            
+            const rows = state.pedidos.map(p => [p.id_pedido || 'N/A', new Date(p.fecha).toLocaleDateString('es-MX'), p.cliente_nombre || 'N/A', `$${(Number(p.total) || 0).toFixed(2)}`, p.estado || 'Pendiente']);
+            doc.autoTable({ startY: 45, head: [['ID Pedido', 'Fecha', 'Cliente', 'Total', 'Estado']], body: rows, theme: 'grid', headStyles: { fillColor: [1, 26, 12], textColor: [3, 250, 110] }, styles: { fontSize: 9 } });
             doc.save('MZG-Pedidos.pdf');
         };
 
@@ -479,9 +459,7 @@
         function renderProductos() {
             document.getElementById('productosTbody').innerHTML = state.productos.map(p => `<tr>
                 <td><img src="${p.imagen_url || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;"></td>
-                <td>${p.nombre || 'Sin nombre'}</td>
-                <td>$${Number(p.precio || 0).toFixed(2)}</td>
-                <td>${p.activo ? 'Visible' : 'Oculto'}</td>
+                <td>${p.nombre || 'Sin nombre'}</td><td>$${Number(p.precio || 0).toFixed(2)}</td><td>${p.activo ? 'Visible' : 'Oculto'}</td>
                 <td><button class="btn-outline" onclick="editProd('${p.id}')"><i class="fas fa-edit"></i> Editar</button></td>
             </tr>`).join('');
         }
