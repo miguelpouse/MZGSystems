@@ -373,15 +373,17 @@
                 const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ apiKey: PUBLIC_KEY, accion: 'listar_productos' }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
                 const data = await res.json();
                 if (data.ok && data.productos) {
-                    PRODUCTS = data.productos.filter(p => p.activo !== false).map(p => ({
-                        id: p.id || Math.random().toString(), 
-                        name: p.nombre || 'Producto sin nombre', 
-                        desc: p.descripcion || 'Sin descripción', 
-                        price: Number(p.precio) || 0,
-                        cat: p.categoria || 'General', 
-                        image: p.imagen_url || 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&q=75', 
-                        etiqueta: p.etiqueta || ''
-                    }));
+                    <!-- Busca esta sección en tu index.html (aprox línea 440) y cambia SOLO el price -->
+PRODUCTS = data.productos.filter(p => p.activo !== false).map(p => ({
+    id: p.id || Math.random().toString(), 
+    name: p.nombre || 'Producto sin nombre', 
+    desc: p.descripcion || 'Sin descripción', 
+    // 🔥 ESTA ES LA LÍNEA CORREGIDA 🔥
+    price: parseFloat(String(p.precio).replace(/[^0-9.-]+/g,"")) || 0,
+    cat: p.categoria || 'General', 
+    image: p.imagen_url || 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&q=75', 
+    etiqueta: p.etiqueta || ''
+}));
                     renderCategories(); renderStore();
                 }
             } catch (e) { storeGrid.innerHTML = '<p style="text-align:center;width:100%">Error al cargar productos.</p>'; }
