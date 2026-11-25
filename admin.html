@@ -291,12 +291,37 @@
                 } else {
                     throw new Error('Error en estadísticas: ' + (s.error || 'Desconocido'));
                 }
-                renderPedidos(); renderClientes(); renderProductos(); renderBandeja(); actualizarBadges();
+                
+                renderPedidos(); 
+                renderClientes(); 
+                renderProductos(); 
+                renderBandeja(); 
+                actualizarBadges(); // <--- FUNCIÓN RESTAURADA AQUÍ
+                
                 if(!document.getElementById('view-dashboard').classList.contains('hidden')) renderDashboardCharts();
                 
             } catch (error) {
                 alert("⚠️ Error al cargar datos:\n\n" + error.message);
                 console.error(error);
+            }
+        }
+
+        // FUNCIÓN PARA LOS CONTADORES ROJOS
+        function actualizarBadges() {
+            const pendingP = state.pedidos.filter(p => p.estado === 'Pendiente').length;
+            const pendingC = state.cotizaciones.filter(c => c.estado !== 'Atendida').length;
+            const unreadC = state.contactos.filter(c => !c.leido).length;
+
+            const bP = document.getElementById('badgePedidos');
+            const bC = document.getElementById('badgeContactos');
+
+            if (bP) {
+                bP.textContent = pendingP; 
+                bP.classList.toggle('hidden', pendingP === 0);
+            }
+            if (bC) {
+                bC.textContent = pendingC + unreadC; 
+                bC.classList.toggle('hidden', (pendingC + unreadC) === 0);
             }
         }
 
