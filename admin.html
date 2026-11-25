@@ -231,7 +231,13 @@
 
         async function apiPost(payload) {
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ ...payload, apiKey: API_KEY }), headers: { 'Content-Type': 'text/plain' } });
-            return res.json();
+            const text = await res.text();
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                console.error("Respuesta del servidor:", text);
+                throw new Error("El servidor no devolvió datos válidos. Posiblemente la Web App esté restringida o el código tenga un error. Revisa la consola.");
+            }
         }
 
         document.getElementById('loginBtn').onclick = async () => {
@@ -242,7 +248,7 @@
                 const r = await apiPost({ accion: 'estadisticas' });
                 if (r.ok) { localStorage.setItem(LS_KEY, key); document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); loadAll(); } 
                 else { err.textContent = 'Error: ' + (r.error || 'API Key inválida'); API_KEY = ''; }
-            } catch { err.textContent = 'Error de conexión'; API_KEY = ''; }
+            } catch (error) { err.textContent = error.message; API_KEY = ''; }
         };
         document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem(LS_KEY); location.reload(); };
 
@@ -267,10 +273,10 @@
                 const data = await apiPost({ accion: 'dashboard_data' });
                 if (!data.ok) throw new Error(data.error || 'Error al cargar datos');
                 
-                state.pedidos = (data.pedidos || []).sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
-                state.productos = data.productos || [];
-                state.cotizaciones = data.cotizaciones || [];
-                state.contactos = data.contactos || [];
+                state.pedidos = Array.isArray(data.pedidos) ? data.pedidos.sort((a,b) => new Date(b.fecha) - new Date(a.fecha)) : [];
+                state.productos = Array.isArray(data.productos) ? data.productos : [];
+                state.cotizaciones = Array.isArray(data.cotizaciones) ? data.cotizaciones : [];
+                state.contactos = Array.isArray(data.contactos) ? data.contactos : [];
                 
                 const s = await apiPost({ accion: 'estadisticas' });
                 if (s.ok) {
@@ -283,13 +289,13 @@
                         <div class="kpi-card"><div class="kpi-label">Clientes Únicos</div><div class="kpi-val">${new Set(state.pedidos.map(p=>p.cliente_email).filter(Boolean)).size}</div></div>
                     `;
                 } else {
-                    throw new Error('Error al obtener estadísticas: ' + (s.error || 'Desconocido'));
+                    throw new Error('Error en estadísticas: ' + (s.error || 'Desconocido'));
                 }
                 renderPedidos(); renderClientes(); renderProductos(); renderBandeja(); actualizarBadges();
                 if(!document.getElementById('view-dashboard').classList.contains('hidden')) renderDashboardCharts();
                 
             } catch (error) {
-                alert("Hubo un problema al cargar los datos: " + error.message + "\n\nRevisa que tu Code.gs esté actualizado y hayas creado una 'Nueva Versión' en Implementar.");
+                alert("⚠️ Error al cargar datos:\n\n" + error.message);
                 console.error(error);
             }
         }
@@ -490,7 +496,11 @@
         document.getElementById('formProducto').onsubmit = async (e) => {
             e.preventDefault(); const btn = document.getElementById('btnSaveProd'); btn.textContent = 'Guardando...'; btn.disabled = true;
             let imgUrl = document.getElementById('prodImagenUrl').value;
-            if (imgUrl.startsWith('data:image')) { const up = await apiPost({ accion: 'subir_imagen', base64: imgUrl }); if (up.ok) imgUrl = up.url; }
+            if (imgUrl.startsWith('data:image')) { 
+                const up = await apiPost({ accion: 'subir_imagen', base64: imgUrl }); 
+                if (up.ok) imgUrl = up.url; 
+                else { alert("Error al subir imagen: " + up.error); btn.textContent = 'Guardar'; btn.disabled = false; return; }
+            }
             const payload = { accion: document.getElementById('prodId').value ? 'actualizar_producto' : 'nuevo_producto', id: document.getElementById('prodId').value || undefined, nombre: document.getElementById('prodNombre').value, descripcion: document.getElementById('prodDesc').value, precio: document.getElementById('prodPrecio').value, categoria: document.getElementById('prodCat').value, etiqueta: document.getElementById('prodEtiqueta').value, activo: document.getElementById('prodActivo').value === 'true', imagen_url: imgUrl };
             const res = await apiPost(payload); btn.textContent = 'Guardar'; btn.disabled = false;
             if (res.ok) { document.getElementById('modalProducto').classList.remove('open'); loadAll(); } else { alert('Error: ' + res.error); }

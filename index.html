@@ -29,7 +29,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- LIBRERÍAS PARA GENERAR PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
 
@@ -461,28 +460,21 @@
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
                     
-                    // Encabezado
                     doc.setFillColor(3, 250, 110); doc.rect(0, 0, 210, 32, 'F');
                     doc.setTextColor(1, 26, 12); doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.text('MZG Systems', 14, 16);
                     doc.setFontSize(10); doc.text('Orden de Compra: ' + orderNum, 14, 24);
                     doc.text('Fecha: ' + new Date().toLocaleDateString('es-MX'), 14, 29);
                     
-                    // Datos Cliente
                     doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text('Cliente:', 14, 45);
                     doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
                     doc.text(`${name} | ${email}`, 14, 51);
 
-                    // Tabla
                     const rows = cart.map(i => [i.name, i.qty.toString(), `$${i.price.toFixed(2)}`, `$${(i.price*i.qty).toFixed(2)}`]);
                     doc.autoTable({
-                        startY: 60,
-                        head: [['Producto', 'Cant.', 'Precio', 'Importe']],
-                        body: rows,
-                        theme: 'grid',
+                        startY: 60, head: [['Producto', 'Cant.', 'Precio', 'Importe']], body: rows, theme: 'grid',
                         headStyles: { fillColor: [3, 250, 110], textColor: [1, 26, 12] }
                     });
 
-                    // Totales
                     let finalY = doc.lastAutoTable.finalY + 10;
                     doc.text(`Subtotal: $${subtotal.toFixed(2)}`, 140, finalY);
                     doc.text(`IVA (16%): $${iva.toFixed(2)}`, 140, finalY + 7);
